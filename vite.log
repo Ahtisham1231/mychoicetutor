@@ -1,0 +1,37 @@
+nohup: ignoring input
+
+> dev
+> vite --host 0.0.0.0
+
+
+  VITE v5.4.9  ready in 407 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://51.89.144.50:5173/
+
+  LARAVEL v10.24.0  plugin v0.7.8
+
+  ➜  APP_URL: https://mychoicetutor.com
+node:internal/fs/watchers:247
+    const error = new UVException({
+                  ^
+
+Error: ENOSPC: System limit for number of file watchers reached, watch '/var/www/html/backup_14oct24/__MACOSX/vendor/macsidigital/laravel-zoom/config/._config.php'
+    at FSWatcher.<computed> (node:internal/fs/watchers:247:19)
+    at Object.watch (node:fs:2464:36)
+    at createFsWatchInstance (file:///var/www/html/node_modules/vite/dist/node/chunks/dep-Cyk9bIUq.js:42768:17)
+    at setFsWatchListener (file:///var/www/html/node_modules/vite/dist/node/chunks/dep-Cyk9bIUq.js:42815:15)
+    at NodeFsHandler._watchWithNodeFs (file:///var/www/html/node_modules/vite/dist/node/chunks/dep-Cyk9bIUq.js:42970:14)
+    at NodeFsHandler._handleFile (file:///var/www/html/node_modules/vite/dist/node/chunks/dep-Cyk9bIUq.js:43034:23)
+    at NodeFsHandler._addToNodeFs (file:///var/www/html/node_modules/vite/dist/node/chunks/dep-Cyk9bIUq.js:43276:21)
+Emitted 'error' event on FSWatcher instance at:
+    at FSWatcher._handleError (file:///var/www/html/node_modules/vite/dist/node/chunks/dep-Cyk9bIUq.js:44469:10)
+    at NodeFsHandler._addToNodeFs (file:///var/www/html/node_modules/vite/dist/node/chunks/dep-Cyk9bIUq.js:43284:18) {
+  errno: -28,
+  syscall: 'watch',
+  code: 'ENOSPC',
+  path: '/var/www/html/backup_14oct24/__MACOSX/vendor/macsidigital/laravel-zoom/config/._config.php',
+  filename: '/var/www/html/backup_14oct24/__MACOSX/vendor/macsidigital/laravel-zoom/config/._config.php'
+}
+
+Node.js v21.6.2
