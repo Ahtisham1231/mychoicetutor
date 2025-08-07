@@ -97,23 +97,32 @@
                                     <option value="3" {{ $tutorpd->gender == "3" ? 'selected' : '' }}>Other</option>
                                 </select>
                             </div>
+                            <div class="form-group col-md-6">
+                                <label>Headline</label>
+                                <input type="text" class="form-control char-limit" name="headline"
+                                    value="{{ $tutorpd->headline ?? '' }}" maxlength="200" data-limit="200">
+                                <small class="text-muted char-count-feedback"></small>
+                            </div>
 
                             <div class="form-group col-md-6">
                                 <label>Qualification</label>
-                                <input type="text" class="form-control" name="qualification"
-                                    value="{{ $tutorpd->qualification ?? '' }}">
+                                <input type="text" class="form-control char-limit" name="qualification"
+                                    value="{{ $tutorpd->qualification ?? '' }}" maxlength="200" data-limit="200">
+                                <small class="text-muted char-count-feedback"></small>
                             </div>
 
                             <div class="form-group col-md-6">
                                 <label>Experience</label>
-                                <input type="text" class="form-control" name="experience"
-                                    value="{{ $tutorpd->experience ?? '' }}">
+                                <input type="text" class="form-control char-limit" name="experience"
+                                    value="{{ $tutorpd->experience ?? '' }}" maxlength="200" data-limit="200">
+                                <small class="text-muted char-count-feedback"></small>
                             </div>
 
                             <div class="form-group col-md-6">
                                 <label>Certification</label>
-                                <input type="text" class="form-control" name="certification"
-                                    value="{{ $tutorpd->certification ?? '' }}">
+                                <input type="text" class="form-control char-limit" name="certification"
+                                    value="{{ $tutorpd->certification ?? '' }}" maxlength="200" data-limit="200">
+                                <small class="text-muted char-count-feedback"></small>
                             </div>
 
                             <div class="form-group col-md-6">
@@ -134,22 +143,16 @@
                                     value="{{ $tutorpd->email ?? session('userid')->email }}" disabled>
                             </div>
 
-                            <div class="form-group col-md-6">
-                                <label>Headline</label>
-                                <input type="text" class="form-control" name="headline"
-                                    value="{{ $tutorpd->headline ?? '' }}">
-                            </div>
 
                             <div class="form-group col-md-6">
-                                <label>About Me</label>
-                                <input type="text" class="form-control" name="goals"
-                                    value="{{ $tutorpd->goal ?? '' }}">
+                                <label>Rate Per Hour (£)<i style="color:red">*</i></label>
+                                <input type="text" class="form-control" name="rateperhour"
+                                    value="{{ $tutorpd->rateperhour ?? 0 }}" disabled>
                             </div>
 
                             <div class="form-group col-md-6">
                                 <label>Other Details</label>
-                                <input type="text" class="form-control" name="details1"
-                                    value="{{ $tutorpd->detail_1 ?? '' }}">
+                                <textarea class="form-control" name="details1" rows="4" data-limit="200">{{ $tutorpd->detail_1 ?? '' }}</textarea>
                             </div>
 
                             <div class="form-group col-md-6" hidden>
@@ -163,15 +166,16 @@
                                 <input type="text" class="form-control" name="details3"
                                     value="{{ $tutorpd->detail_3 ?? '' }}">
                             </div>
+                            
 
                             <div class="form-group col-md-6">
-                                <label>Rate Per Hour (£)<i style="color:red">*</i></label>
-                                <input type="text" class="form-control" name="rateperhour"
-                                    value="{{ $tutorpd->rateperhour ?? 0 }}" disabled>
+                                <label>About Me</label>
+                                <textarea class="form-control " name="goals" rows="4" data-limit="200">{{ $tutorpd->goal ?? '' }}</textarea>
+                                <small class="text-muted word-count-feedback"></small>
                             </div>
 
                             <div class="form-group col-md-6">
-                                <label>Intro Video Link <span style="font-size: 10px; color:red;">(e.g., https://www.youtube.com/embed/abc123)</span></label>
+                                <label>Intro Video Link </br> <span style="font-size: 10px; color:red;">(e.g., https://www.youtube.com/embed/abc123)</span></label>
                                 <input type="text" class="form-control" name="introvideolink"
                                     value="{{ $tutorpd->intro_video_link ?? '' }}">
                             </div>
@@ -614,6 +618,42 @@
             event.preventDefault();
             event.returnValue = 'You have unsaved changes, do you really want to leave?';
         }
+    });
+</script>
+<script>
+    document.querySelectorAll('.word-limit').forEach(function (field) {
+        const limit = parseInt(field.getAttribute('data-limit'));
+        let feedback;
+
+        // Create feedback element if not already present
+        if (field.nextElementSibling && field.nextElementSibling.classList.contains('word-count-feedback')) {
+            feedback = field.nextElementSibling;
+        } else {
+            feedback = document.createElement('small');
+            feedback.classList.add('text-muted', 'word-count-feedback');
+            field.parentNode.appendChild(feedback);
+        }
+
+        const updateWordCount = () => {
+            let words = field.value.trim().split(/\s+/).filter(word => word.length > 0);
+            if (words.length > limit) {
+                // Trim to limit
+                field.value = words.slice(0, limit).join(' ');
+                words = words.slice(0, limit);
+            }
+
+            feedback.textContent = `${words.length}/${limit} words`;
+        };
+
+        // Listen to input and paste
+        field.addEventListener('input', updateWordCount);
+        field.addEventListener('paste', function (e) {
+            // Delay so value is available
+            setTimeout(updateWordCount, 0);
+        });
+
+        // Initialize on page load
+        updateWordCount();
     });
 </script>
 

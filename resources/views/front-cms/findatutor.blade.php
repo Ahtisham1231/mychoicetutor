@@ -164,7 +164,7 @@
                                 <i class="fa fa-star"></i>
                                 {{$tutor->avg_rating}} ({{$tutor->total_reviews}})
                             </span>
-                            <span>${{$tutor->rateperhour}}/h</span>
+                            <span>&#163; {{$tutor->rateperhour}}/h</span>
                         </div>
                         <a href="tutor-details/{{$tutor->tutor_id}}" style="color: black"><span class="name">
                                 {{$tutor->name}}

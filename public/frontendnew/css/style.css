@@ -1578,7 +1578,8 @@ color: #838181;
   border-radius: 20px; /* Rounded edges */
   opacity: 1;
   font-size: 13px;
-  
+  max-height: 250px;
+  overflow: auto; 
 }
 
 .select-items div {
