@@ -169,6 +169,7 @@
                                     <a href="/free-trial-class/student-login/{{ $tutorpd->tutor_id }}" class="btn">Free
                                         Trial Class</a>
                                 </div>
+                                <div></div>
 
                                 <div class="expMore btnSize">
                                     <a href="/enroll-class/student-login/{{ $tutorpd->tutor_id }}" class="btn">Book Classes</a>
