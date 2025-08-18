@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -70,7 +71,7 @@ class HomeController extends Controller
         ->join('tutorregistrations', 'tutorregistrations.id', '=', 'tutorprofiles.tutor_id')
         ->leftJoin('zoom_classes', 'zoom_classes.tutor_id', '=', 'tutorprofiles.tutor_id') // Adding join for zoom_classes
       ->where('tutorregistrations.is_active', 1)
-       ->orderby('tutorregistrations.created_at','desc')
+    //    ->orderby('tutorregistrations.created_at','desc')
         ->groupBy(
             'tutorprofiles.tutor_id',
             'tutorprofiles.name',
@@ -82,8 +83,9 @@ class HomeController extends Controller
             'tutorprofiles.admin_commission',
             'tutorprofiles.profile_pic'
         )
-        ->get();
-  // dd($tutors->toArray());
+       ->orderByRaw('profile_pic IS NOT NULL DESC, tutorregistrations.created_at DESC')
+       ->get();
+//   dd($tutors->toArray());
         $tutorlists = tutorprofile::select('tutorprofiles.id', 'tutorprofiles.tutor_id', 'classes.name as class_name', 'tutorprofiles.name', 'tutorprofiles.headline', 'tutorprofiles.qualification as tutor_qualification', 'tutorprofiles.intro_video_link', 'tutorprofiles.experience', 'tutorprofiles.rate as rateperhour', DB::raw('(tutorsubjectmappings.rate + (tutorsubjectmappings.rate * tutorsubjectmappings.admin_commission / 100)) as rate'), 'tutorprofiles.profile_pic', 'subjects.id as subjectid', 'subjects.name as subject', DB::raw('SUM(ratings) / COUNT(ratings) AS starrating, COUNT(DISTINCT topics.name) as total_topics'), 'tutorsubjectmappings.id as sub_map_id',
             DB::raw('(SELECT COUNT(*) FROM classschedules WHERE classschedules.tutor_id = tutorprofiles.id) AS total_classes_done')
         )
@@ -126,7 +128,7 @@ class HomeController extends Controller
 
         $blogs = Blogs::select('*')->where('is_active', 1)->orderby('created_at')->get();
         // dd($subjectcategories);
-        // dd( ($blogs));
+        // dd(get_defined_vars());
         return view('front-cms.index', get_defined_vars());
         // return view('front-cms.index', compact('classes'));
     }
@@ -173,7 +175,7 @@ class HomeController extends Controller
             ->where('tutorregistrations.is_active', 1)
             ->where('subjects.id', 'like', '%' . $subjectid . '%') // LIKE search for subject
             ->where('classes.id', 'like', '%' . $classid . '%') // LIKE search for class
-            ->orderby('tutorregistrations.created_at','desc')
+            // ->orderby('tutorregistrations.created_at','desc')
             ->groupBy(
                 'tutorprofiles.tutor_id',
                 'tutorprofiles.name',
@@ -185,6 +187,7 @@ class HomeController extends Controller
                 'tutorprofiles.admin_commission',
                 'tutorprofiles.profile_pic'
             )
+               ->orderByRaw('profile_pic IS NOT NULL DESC, tutorregistrations.created_at DESC')
             ->get();
 
         $subjectlists = DB::table('subjects')
@@ -267,7 +270,9 @@ class HomeController extends Controller
             'tutorprofiles.rateperhour',
             'tutorprofiles.admin_commission',
             'tutorprofiles.profile_pic'
-        )->get();
+        )
+           ->orderByRaw('profile_pic IS NOT NULL DESC, tutorregistrations.created_at DESC')
+        ->get();
 
         $subjectlists = DB::table('subjects')
             ->join('subjectcategories', 'subjects.category', '=', 'subjectcategories.id')
@@ -442,7 +447,7 @@ class HomeController extends Controller
         ->join('tutorregistrations', 'tutorregistrations.id', '=', 'tutorprofiles.tutor_id')
         ->leftJoin('zoom_classes', 'zoom_classes.tutor_id', '=', 'tutorprofiles.tutor_id') // Adding join for zoom_classes
         ->where('tutorregistrations.is_active', 1)
-        ->orderby('tutorregistrations.created_at','desc')
+        // ->orderby('tutorregistrations.created_at','desc')
         ->groupBy(
             'tutorprofiles.tutor_id',
             'tutorprofiles.name',
@@ -454,6 +459,7 @@ class HomeController extends Controller
             'tutorprofiles.admin_commission',
             'tutorprofiles.profile_pic'
         )
+           ->orderByRaw('profile_pic IS NOT NULL DESC, tutorregistrations.created_at DESC')
         ->get();
 
 
@@ -521,9 +527,10 @@ class HomeController extends Controller
         if (!$tutorpd) {
             return view('front-cms.tutordetails')->with('fail', 'Something went wrong');
         }
-        $subjects = tutorSubjectMapping::select('tutorsubjectmappings.*', 'subjects.name as subject_name')
+        $subjects = tutorSubjectMapping::select('subjects.name as subject_name')
             ->join('subjects', 'subjects.id', 'tutorsubjectmappings.subject_id')
             ->where('tutor_id', $id)
+            ->groupBy('subjects.name')
             ->get();
 
         // dd($reviews);
@@ -570,6 +577,7 @@ class HomeController extends Controller
             ->join('tutorregistrations', 'tutorregistrations.id', '=', 'tutorprofiles.tutor_id')
             ->leftJoin('zoom_classes', 'zoom_classes.tutor_id', '=', 'tutorprofiles.tutor_id') // Adding join for zoom_classes
             ->where('tutorsubjectmappings.subject_id', '=', $primarysubjects->subject_id)
+            ->where('tutorprofiles.tutor_id', '!=', $id)
             ->groupBy(
                 'tutorprofiles.tutor_id',
                 'tutorprofiles.name',
@@ -581,6 +589,7 @@ class HomeController extends Controller
                 'tutorprofiles.admin_commission',
                 'tutorprofiles.profile_pic'
             )
+               ->orderByRaw('profile_pic IS NOT NULL DESC, tutorregistrations.created_at DESC')
             ->get();
 
 
@@ -951,6 +960,87 @@ class HomeController extends Controller
         }
 
     }
+
+    public function forget_password(Request $request){
+       
+        if ($request->requestAs == 'student') {
+            $user = studentregistration::where('email', '=', $request->email, )->first();
+        }
+
+        else if ($request->requestAs == 'tutor') {
+            $user = tutorregistration::where('email', '=', $request->email, )->first();
+        }
+
+        else if ($request->requestAs == 'parent') {
+            $user = studentregistration::where('email', '=', $request->email)->first();
+        }
+        else{
+            return back()->with('fail', 'No User Found!');   
+        }
+      
+             $token = Str::random(64);
+
+        $email = 'haqahtisham1@gmail.com';
+
+          DB::table('password_resets')->insert([
+
+              'email' => $request->email, 
+
+              'token' => $token, 
+
+              'created_at' => Carbon::now()
+
+            ]);
+
+  
+
+          Mail::send('emails.forgetPassword', ['token' => $token], function($message) use($email){
+
+              $message->to($email);
+
+              $message->subject('Reset Password');
+
+          });
+               return redirect()->route('home')->with('success', 'Token send successfully!');
+
+    }
+
+    public function reset_password_form($token)
+    {
+        return view('front-cms.forgetpassword', ['token' => $token]);
+    }
+   public function reset_password_submit(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|min:6|confirmed', // expects password_confirmation field
+        ]);
+        $updatePassword = DB::table('password_resets')
+            ->where('token', $request->token)
+            ->first();
+
+        if (!$updatePassword) {
+            return back()->with('fail', 'Invalid or expired token!');
+        }
+
+        // Find user by email
+        $user = studentregistration::where('email', $updatePassword->email)
+            ->orWhere('email', $updatePassword->email)
+            ->first();
+
+        if (!$user) {
+            return back()->with('fail', 'User not found!');
+        }
+
+        // Update user password
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        // Delete token
+        DB::table('password_resets')->where('email', $updatePassword->email)->delete();
+
+        return redirect()->route('home')->with('success', 'Password updated successfully!');
+    }
+
     public function std_registration()
     {
 
@@ -961,7 +1051,7 @@ class HomeController extends Controller
     {
 
         // if ($request->id == "1") {
-        $request->validate([
+        $request->validate([+
             'name' => 'required',
             'email' => 'required|email',
             'mobile' => 'required|min:4|max:13',

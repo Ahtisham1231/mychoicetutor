@@ -91,6 +91,10 @@ Route::get('/student/login', [HomeController::class, 'std_login'])->name('studen
 Route::get('/student/mobile-verify',[HomeController::class,'student_mobile_verify'])->name('student_mobile_verify');
 Route::post('/student/mobile-verify',[HomeController::class,'verify_student_mobile'])->name('verify_student_mobile');
 Route::get('/student-login',[HomeController::class, 'student_login'])->name('student_login');
+Route::post('/forget-password',[HomeController::class, 'forget_password'])->name('forget_password');
+Route::get('reset-password/{token}', [HomeController::class, 'reset_password_form'])->name('reset.password.get');
+// Handle reset
+Route::post('/reset-password/reset_password_submit', [HomeController::class, 'reset_password_submit'])->name('reset.password.post');
 
 Route::get('/free-trial-class/student-login/{id}',[HomeController::class, 'free_trial_class_student_login_form'])->name('student_login_trial');
 Route::get('/free-trial-class-student-login',[HomeController::class, 'free_trial_class_student_login'])->name('student_login_trial_post');

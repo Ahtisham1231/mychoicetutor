@@ -39,7 +39,11 @@
                                             </figure>
                                             <div class="tu-product-title">
                                                 <h3>{{$tutorpd->name}} <i class="icon icon-check-circle tu-greenclr" data-tippy-trigger="mouseenter" data-tippy-html="#tu-verifed" data-tippy-interactive="true" data-tippy-placement="top"></i></h3>
-                                                <h5>{{$tutorpd->subject}}</h5>
+                                                <div class="sub-btns">
+                                                    @foreach($tutorsub as $subjectMapping)
+                                                        <button>{{ $subjectMapping->subject }}</button>
+                                                    @endforeach
+                                                </div>
                                             </div>
                                             <div class="tu-listinginfo_price"> 
                                                 <span>Starting from:</span>

@@ -133,7 +133,7 @@
 
                             <div class="form-group col-md-6">
                                 <label>Secondary Mobile</label>
-                                <input type="text" class="form-control" name="secmobile"
+                                <input type="number" class="form-control" name="secmobile"
                                     value="{{ $tutorpd->secondary_mobile ?? '' }}">
                             </div>
 
@@ -145,11 +145,15 @@
 
 
                             <div class="form-group col-md-6">
-                                <label>Rate Per Hour (£)<i style="color:red">*</i></label>
+                                <label>Rate Per Hour (&#163;)<i style="color:red">*</i></label>
                                 <input type="text" class="form-control" name="rateperhour"
                                     value="{{ $tutorpd->rateperhour ?? 0 }}" disabled>
                             </div>
-
+				<div class="form-group col-md-6">
+                                <label>About Me</label>
+                                <textarea class="form-control " name="goals" rows="4" data-limit="200">{{ $tutorpd->goal ?? '' }}</textarea>
+                                <small class="text-muted word-count-feedback"></small>
+                            </div>
                             <div class="form-group col-md-6">
                                 <label>Other Details</label>
                                 <textarea class="form-control" name="details1" rows="4" data-limit="200">{{ $tutorpd->detail_1 ?? '' }}</textarea>
@@ -165,13 +169,6 @@
                                 <label>Details 3</label>
                                 <input type="text" class="form-control" name="details3"
                                     value="{{ $tutorpd->detail_3 ?? '' }}">
-                            </div>
-                            
-
-                            <div class="form-group col-md-6">
-                                <label>About Me</label>
-                                <textarea class="form-control " name="goals" rows="4" data-limit="200">{{ $tutorpd->goal ?? '' }}</textarea>
-                                <small class="text-muted word-count-feedback"></small>
                             </div>
 
                             <div class="form-group col-md-6">

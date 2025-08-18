@@ -57,9 +57,12 @@ class TutorProfileController extends Controller
             if(!$tutorpd){
                 $tutorpd = TutorRegistration::select('*')->where('id',session('userid')->id)->first();
             }
-        $tutorsub = tutorsubjectmapping::select('*','subjects.name as subject')
-        ->join('subjects','subjects.id','tutorsubjectmappings.subject_id')
-                    ->where('tutor_id', $id)->get();
+        $tutorsub = tutorsubjectmapping::select('subjects.name as subject')
+            ->join('subjects', 'subjects.id', '=', 'tutorsubjectmappings.subject_id')
+            ->where('tutor_id', $id)
+            ->distinct()
+            ->get();
+
         if (!$tutorpd) {
             return view('tutor.tutorprofile')->with('fail', 'Something went wrong');
         }
