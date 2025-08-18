@@ -980,7 +980,7 @@ class HomeController extends Controller
       
              $token = Str::random(64);
 
-        $email = 'haqahtisham1@gmail.com';
+        $email = $request->email;
 
           DB::table('password_resets')->insert([
 
