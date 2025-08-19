@@ -1051,7 +1051,7 @@ class HomeController extends Controller
     {
 
         // if ($request->id == "1") {
-        $request->validate([+
+        $request->validate([
             'name' => 'required',
             'email' => 'required|email',
             'mobile' => 'required|min:4|max:13',
