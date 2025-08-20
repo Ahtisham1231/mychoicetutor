@@ -380,7 +380,7 @@
                                                 </div>
                                                 <div class="tu-filterselect">
                                                     <h6>Choose subjects</h6>
-                                                    <ul class="tu-categoriesfilter">
+                                                    <ul class="tu-categoriesfilter" style="max-height: 200px; overflow-y: auto; padding-right: 5px;">
                                                         @foreach ($subjectlist as $subject)
                                                             <li>
                                                                 <div class="tu-check tu-checksm">

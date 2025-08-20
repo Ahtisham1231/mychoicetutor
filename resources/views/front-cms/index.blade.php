@@ -297,7 +297,7 @@
         <h4>10 million evaluated private tutors</h4>
         <br>
         <div class="row">
-             @foreach ($tutors->slice(0, 8) as $tutor)
+             @foreach ($tutors->slice(0, 12) as $tutor)
             <a href="tutor-details/{{$tutor->tutor_id}}" style="color: black">
                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-xs-12 tutorCol">
                     <div class="tutorDetails">

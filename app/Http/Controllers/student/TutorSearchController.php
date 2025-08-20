@@ -61,7 +61,7 @@ class TutorSearchController extends Controller
                 'tutorprofiles.admin_commission',
                 'tutorprofiles.profile_pic'
             )
-            ->orderby('tutorregistrations.created_at','desc')
+            ->orderByRaw('profile_pic IS NOT NULL DESC, tutorregistrations.created_at DESC')
             ->get();
 
         // dd($tutorlist);

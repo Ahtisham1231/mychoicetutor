@@ -84,12 +84,12 @@
                         </ul>
 
 
-                        <ul class="navbar-nav ml-auto mr-4 deskBtn" >
+                        <ul class="navbar-nav ml-auto mr-4 deskBtn">
                             <li class="nav-item cta-btn">
                                 <div class="btnSec">
                                     <button class="btn btn-sm " data-toggle="modal" data-target="#loginPopup">Login</button>
                                     <a href="{{('/student/register')}}" class="btn btn-sm ">Get Started</a>
-                                    <span>
+                                    <span style="display:none;" >
                                         En
                                         <i class="fa fa-angle-down "></i>
                                     </span>
@@ -97,7 +97,7 @@
                             </li>
                         </ul>
 
-                        <ul class="navbar-nav ml-auto mobLang mt-2" >
+                        <ul class="navbar-nav ml-auto mobLang mt-2" style="display:none;" >
                             <li class="nav-item cta-btn">
                                 <div >
                                     <span>
