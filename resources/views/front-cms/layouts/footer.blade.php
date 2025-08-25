@@ -454,16 +454,16 @@
                   </ul>
   
                   <div class="social">
-                    <a href="https://www.facebook.com/share/1JgtwUtbCe/" target="_blank">
+                    <a href="https://www.facebook.com/share/1JnqJrEtVx/" target="_blank">
                         <img src="{{ url('frontendnew/img/icons/facebook.png') }}" alt="Facebook">
                     </a>
-                    <a href="https://youtube.com/" target="_blank">
+                    <a href="https://youtube.com/@choicetutoracademy?si=s1Vn-NvQmCGENz4-" target="_blank">
                         <img src="{{ url('frontendnew/img/icons/OUTLINE_copy_2.png') }}" alt="Youtube">
                     </a>
                     <a href="https://www.instagram.com/my_choice_tutor?igsh=MWI0enFqYjdhb2NwdA==" target="_blank">
                         <img src="{{ url('frontendnew/img/icons/Group 797.png') }}" alt="Instagram">
                     </a>
-                    <a href="https://www.tiktok.com/@my.choice.tutor?_t=ZS-8ydHV6VZHd4&_r=1" target="_blank">
+                    <a href="https://www.tiktok.com/@my.choice.tutor?_t=ZS-8z2WgZKxz6O&_r=1" target="_blank">
                         <img src="{{ url('frontendnew/img/icons/tiktok.png') }}" alt="Tik Tok" height="33" width="33">
                     </a>
                   </div>
