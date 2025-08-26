@@ -4,7 +4,19 @@
 <!-- Start right Content here -->
 <!-- ============================================================== -->
 <div class="main-content">
+<style>
+    .tutorcard {
+    min-width: 500px;
+    max-width: 500px;
+    min-height: 200px;   
+    max-height: 200px;
+}
+.slides {
+    scrollbar-width: thin;         /* auto | thin | none */
+    scrollbar-color: #4B3C99 #f1f1f1; /* thumb | track */
+}
 
+</style>
     <div class="page-content">
         @if(Session::has('success'))
         <script>
@@ -613,15 +625,24 @@
                                 <div class="tutorDesc">
                                     <a href="tutorprofile/{{ $tutorlist->tutor_id }}" style="color: black"><span class="tutname">{{ $tutorlist->name }}</span></a><br>
                                     <table class="tutorTable">
-                                        <tr>
-                                            <td colspan="2"><small>{{ $tutorlist->headline }}</small></td>
-                                        </tr>
-                                        <tr>
+                                       
+                                    <tr>
+                                        <td colspan="2">
+                                            <small>
+                                                <?php
+                                                    $text = $tutorlist->headline;
+                                                    echo strlen($text) > 45 ? substr($text, 0, 45) . '...' : $text;
+                                                ?>
+                                            </small>
+                                        </td>
+                                    </tr>
+
+                                        <tr style="display:none;">
                                             <td>{{$tutorlist->total_classes_done}}+ Lessions</td>
                                             <td class="floattright"><b>Exp:</b> {{$tutorlist->experience}}</td>
                                         </tr>
                                         <tr>
-                                            <td><b>Subject:</b> {{ $tutorlist->subject }} </td>
+                                            <td><b>Subject:</b> {{ $tutorlist->subject > 20 ? substr( $tutorlist->subject, 0, 20) . '...' :  $tutorlist->subject }} </td>
                                             <td class="text-success floattright">Verified</td>
                                         </tr>
 

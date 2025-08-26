@@ -705,7 +705,7 @@ $studentprofile = studentprofile::where('student_id', session('userid')->id)->fi
                             <a href="{{ route('student.searchtutor') }}"
                                 class="nav-link menu-link {{ Request::is('student/searchtutor') ? 'active' : '' }}">
                                 <img src="/images/Student-dashboard-menu-icon/Explore tutors.svg" alt="">&nbsp; <span
-                                    data-key="t-dashboards"> Explore Tutors</span> </a>
+                                    data-key="t-dashboards"> All Tutors</span> </a>
                         </li>
 
                         <li class="nav-item">
