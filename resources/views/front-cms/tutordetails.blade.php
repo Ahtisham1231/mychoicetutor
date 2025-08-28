@@ -14,9 +14,11 @@
 
 
                     <div class="sub-btns">
+                        @if(isset($subjects))
                         @foreach ($subjects as $subject)
                             <button>{{ $subject->subject_name }}</button>
                         @endforeach
+                        @endif
                     </div>
 
                     <div class="aboutTutor">
@@ -67,6 +69,7 @@
 
 
                     <div class="row mt-4">
+                        @if(isset($reviews))
                         @foreach ($reviews->take(10) as $review)
                             <div class="col-12 mb-4">
                                 <div class="review-text" style="padding: 20px !important">
@@ -87,6 +90,7 @@
                                 </div>
                             </div>
                         @endforeach
+                        @endif
                     </div>
 
 
@@ -108,9 +112,11 @@
                     <h6 class="mb-2">Skills</h6>
 
                     <div class="sub-btns">
+                        @if(isset($tutorpd->keywords))
                         @foreach (explode(',', $tutorpd->keywords) as $keyword)
                             <button>{{ trim($keyword) }}</button>
                         @endforeach
+                        @endif
                     </div>
 
                 </div>
@@ -192,6 +198,7 @@
             <h5 class="my-5">Other tutors in {{ $primarysubjects->subject_name  ?? '' }}</h5>
         </div>
         <div class="row">
+            @if(isset($othertutors))
             @foreach ($othertutors->slice(0, 4) as $othertutor)
                 <a href="/tutor-details/{{ $othertutor->tutor_id }}" style="color: black">
                     <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 tutorCol">
@@ -217,7 +224,7 @@
                     </div>
                 </a>
             @endforeach
-
+@endif
         </div>
 
 
