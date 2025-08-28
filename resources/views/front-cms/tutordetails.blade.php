@@ -101,7 +101,7 @@
                         <h5>Introduction Video</h5>
 
                         <div class="tutor-Video">
-                            <iframe width="100%" height="400" src="{{ $tutorpd->intro_video_link }}"
+                            <iframe width="100%" height="400" src="{{ $tutorpd->intro_video_link ?? ''}}"
                                 title="YouTube video player" frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
