@@ -205,9 +205,11 @@
                     <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 tutorCol">
                         <div class="tutorDetails padd-200">
                             <div class="tutorImg">
+                                @if(isset($othertutor->profile_pic))
                                 <img src="{{ url('images/tutors/profilepics', '/') }}{{ $othertutor->profile_pic }}"
                                     width="100%" alt=""
                                     onerror="this.onerror=null;this.src='https://mychoicetutor.com/images/avatar/default_avatar_img.jpg';">
+                                    @endif
                             </div>
                             <div class="star">
                                 <span>
