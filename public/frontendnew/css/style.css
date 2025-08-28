@@ -314,12 +314,18 @@ header .navbar .dropdown-menu a {
   margin-bottom: 0;
 }
 
-.tutorImg img {
+.tutorImg {
+  width: 100%;
   max-width: 500px;
-  max-height: 500px;
   height: 230px;
-  border-radius: 20px;
-  padding: 0 10px;
+  overflow: hidden; /* crop overflow */
+  border-radius: 18px;
+}
+
+.tutorImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* keeps aspect ratio, crops excess */
 }
 
 .tutorProfPic{

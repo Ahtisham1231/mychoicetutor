@@ -302,7 +302,6 @@
                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-xs-12 tutorCol">
                     <div class="tutorDetails">
                         <div class="tutorImg">
-
                             <img src="{{ url('images/tutors/profilepics', '/') }}{{ $tutor->profile_pic }}" width="100%" alt="" onerror="this.onerror=null;this.src='https://mychoicetutor.com/images/avatar/default_avatar_img.jpg';">
                         </div>
                         <div class="star">
@@ -312,11 +311,11 @@
                             </span>
                             <span>&#163; {{ $tutor->rateperhour }}/h</span>
                         </div>
-                        <a href="tutor-details/{{$tutor->tutor_id}}" style="color: black"> <span class="name">
+                        <a href="tutor-details/{{$tutor->tutor_id}}" style="color: black;line-height: 0px;"> <span class="name">
                                 {{ $tutor->name }}
                                 
                             </span></a> 
-                            <p>{{ $tutor->subject }}</p>
+                            <p style="line-height: 14px;">{{ $tutor->subject }}</p>
                        <p class="desc-tutor" style="font-weight: 400;line-height: 14px;font-size: 13px;">
     {{ strlen($tutor->headline) > 100 ? substr($tutor->headline, 0, 100) . '...' : $tutor->headline }}
 </p>
@@ -329,7 +328,7 @@
         <div class="row mt-4">
             <div class="col-12">
                 <div class="expMore">
-                    <a href="findatutor" class="btn btn-lg mb-4">Explore more</a>
+                    <a href="findatutor" class="btn btn-lg mb-4">View ALL</a>
                 </div>
             </div>
         </div>
