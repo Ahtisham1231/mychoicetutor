@@ -125,10 +125,11 @@
                     <div class="tutorDetails tutorProfPic mar-top-40" style="padding: 30px !important">
                         <div class="row">
                             <div class="col-lg-12 col-md-5">
-
-                                <img src="{{ url('images/tutors/profilepics', '/') }}{{ $tutorpd->profile_pic }}"
+                            @if(isset($tutorpd->profile_pic))
+                                <img src="{{ url('images/tutors/profilepics', '/') }}{{ $tutorpd->profile_pic ?? '' }}"
                                     width="100%" alt=""
                                     onerror="this.onerror=null;this.src='https://mychoicetutor.com/images/avatar/default_avatar_img.jpg';">
+                                    @endif
                             </div>
 
                         </div>
