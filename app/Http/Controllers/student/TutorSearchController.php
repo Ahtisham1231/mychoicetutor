@@ -549,8 +549,11 @@ public function admintutorprofile($id)
         ];
 
         session(['stripe_payload' => $stripeData]);
-
-        return view('stripe', ['amt' => $request->totalamountenroll]);
+        $stripekey = env('STRIPE_KEY') ? env('STRIPE_KEY') : 'pk_test_51RQRnr2eHjtuGCfAR6Ox2n88Dnq04kT3XkPMguqjnNX0scs6NN5t24k1xnNwKOfFhGAUyqISv8lPOX9DPePiKZuw003Tgc5fMq';
+        
+        return view('stripe', ['amt' => $request->totalamountenroll,
+                              'stripeKey' => $stripekey
+    ]);
     }
     // public function purchaseclass(Request $request)
     // {
