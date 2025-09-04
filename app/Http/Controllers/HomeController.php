@@ -1010,36 +1010,41 @@ class HomeController extends Controller
         return view('front-cms.forgetpassword', ['token' => $token]);
     }
    public function reset_password_submit(Request $request)
-    {
-        $request->validate([
-            'password' => 'required|min:6|confirmed', // expects password_confirmation field
-        ]);
-        $updatePassword = DB::table('password_resets')
-            ->where('token', $request->token)
-            ->first();
+{
+    // Validate new password
+    $request->validate([
+        'password' => 'required|min:6|confirmed', // expects password_confirmation
+        'token'    => 'required',
+    ]);
 
-        if (!$updatePassword) {
-            return back()->with('fail', 'Invalid or expired token!');
-        }
+    // Check if token exists in password_resets table
+    $updatePassword = DB::table('password_resets')
+        ->where('token', $request->token)
+        ->first();
 
-        // Find user by email
-        $user = studentregistration::where('email', $updatePassword->email)
-            ->orWhere('email', $updatePassword->email)
-            ->first();
-
-        if (!$user) {
-            return back()->with('fail', 'User not found!');
-        }
-
-        // Update user password
-        $user->password = Hash::make($request->password);
-        $user->save();
-
-        // Delete token
-        DB::table('password_resets')->where('email', $updatePassword->email)->delete();
-
-        return redirect()->route('home')->with('success', 'Password updated successfully!');
+    if (!$updatePassword) {
+        return back()->with('fail', 'Invalid or expired token!');
     }
+
+    // Try to find the user in students or tutors
+    $user = studentregistration::where('email', $updatePassword->email)->first()
+         ?? tutorregistration::where('email', $updatePassword->email)->first();
+
+    if (!$user) {
+        return back()->with('fail', 'User not found!');
+    }
+
+    // Update password
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    // Delete the reset token so it can't be reused
+    DB::table('password_resets')
+        ->where('email', $updatePassword->email)
+        ->delete();
+
+    return redirect()->route('home')->with('success', 'Password updated successfully!');
+}
 
     public function std_registration()
     {
