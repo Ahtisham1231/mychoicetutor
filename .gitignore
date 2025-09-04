@@ -5,4 +5,5 @@ node_modules/
 .env
 
 # Ignore vendoe
-vendor/
+/vendor
+
