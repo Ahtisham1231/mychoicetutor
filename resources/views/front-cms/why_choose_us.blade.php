@@ -32,11 +32,8 @@
                 <div class="row ">
                     <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                         <div class="whyChooseUsCol">
-                            <h3>Why choose us?</h3>
-                            <p class="charcol">Education is the best investment one can make in their children’s lives.
-                                It’s
-                                crucial to be well-informed before selecting tutors and the type of tutoring they
-                                receive.
+                            <h3>Why Choose My Choice Tutor?</h3>
+                            <p class="charcol">My Choice Tutor is designed to connect students with qualified and dedicated tutors who can guide them towards academic success. We focus on flexibility, personalized learning, and reliable support, ensuring that every student gets the right tutor to match their learning needs, schedule, and study goals.
                             </p>
 
                         </div>
@@ -73,12 +70,9 @@
 
                 <div class="Bg_purple">
                     <div class="p-5">
-                        <h3>One free trial Class</h3>
+                        <h3>Personalized Learning Experience</h3>
 
-                        <p>MCT offers the option to book a free trial class before committing to a tutor. This
-                            allows you to familiarize yourself with the tutor’s teaching style. Students typically
-                            spend this free trial class planning lessons, identifying weak areas to address, and
-                            discussing various strategies to improve grades in any subject.</p>
+                        <p>At My Choice Tutor, we understand that every student learns differently. Our platform connects learners with tutors who adapt lessons to individual strengths, weaknesses, and goals. Whether you need extra support in a subject or want to excel further, our tutors design study plans to match your pace and style.</p>
                         <a href="findatutor"> <button class="btn search-tutor">Book now</button></a>
 
                     </div>
@@ -93,13 +87,9 @@
                     <div class="col-12 mb-4">
                         <div class="boeder_Bg">
                             <div class="p-5">
-                                <h3>Flexible scheduling</h3>
+                                <h3>Flexible Scheduling Options</h3>
 
-                                <p class="charcol">MCT offers the option to book a free trial class before
-                                    committing to a tutor. This allows you to familiarize yourself with the tutor’s
-                                    teaching style. Students typically spend this free trial class planning lessons,
-                                    identifying weak areas to address, and discussing various strategies to improve
-                                    grades in any subject.</p>
+                                <p class="charcol">We make learning stress-free with flexible scheduling that fits your routine. Students can book sessions at convenient times without disrupting daily activities. Our tutors are available across different time slots, making it easy for school, college, or working students to balance studies with other responsibilities.</p>
 
 
                             </div>
@@ -111,11 +101,9 @@
                     <div class="col-12">
                         <div class="boeder_Bg">
                             <div class="p-5">
-                                <h3>Engage and Excel with Our Lecture Recordings!</h3>
+                                <h3>Qualified and Professional Tutors</h3>
 
-                                <p class="charcol">MCT offers the option to book a free trial class before
-                                    committing to a tutor. This allows you to familiarize yourself with the tutor’s
-                                    teaching style. Students typically spend this free trial class planning lessons,
+                                <p class="charcol">Our tutors are carefully selected for their expertise, professionalism, and passion for teaching. Each tutor undergoes a strict selection process to ensure they can deliver high-quality education. With My Choice Tutor, you learn from reliable mentors who focus on building knowledge, confidence, and long-term academic growth.
                                 </p>
 
                             </div>
@@ -129,12 +117,9 @@
             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 order3">
                 <div class="boeder_Bg">
                     <div class="p-5">
-                        <h3>One-on-one lessons</h3>
+                        <h3>Continuous Support and Guidance</h3>
 
-                        <p class="charcol">MCT offers the option to book a free trial class before committing to a
-                            tutor. This allows you to familiarize yourself with the tutor’s teaching style. Students
-                            typically spend this free trial class planning lessons, identifying weak areas to
-                            address, and discussing various strategies to improve grades in any subject.</p>
+                        <p class="charcol">My Choice Tutor doesn’t stop at lessons; we provide continuous support to ensure consistent progress. Tutors guide students with revision strategies, exam preparation tips, and academic advice. With constant encouragement and feedback, learners gain the motivation and confidence they need to achieve their academic and career goals.</p>
 
                     </div>
                     <img src="{{ url('frontendnew/img/One-on-one-lessons.png') }}" width="100%" alt="">
