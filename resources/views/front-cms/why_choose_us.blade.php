@@ -32,7 +32,7 @@
                 <div class="row ">
                     <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                         <div class="whyChooseUsCol">
-                            <h3>Why Choose My Choice Tutor?</h3>
+                            <h3 style='font-size: 1.25rem;'>Why Choose My Choice Tutor?</h3>
                             <p class="charcol">My Choice Tutor is designed to connect students with qualified and dedicated tutors who can guide them towards academic success. We focus on flexibility, personalized learning, and reliable support, ensuring that every student gets the right tutor to match their learning needs, schedule, and study goals.
                             </p>
 
