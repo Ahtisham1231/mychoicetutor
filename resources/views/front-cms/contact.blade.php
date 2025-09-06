@@ -66,23 +66,13 @@ textarea:focus {
                 </div>
                 <div class="contactsOuter">
                    <div class="openingHr">
-                    <p><b>Opening Hours for Phone Support</b></p>
+                    <p><b>Response Time</b></p>
                         <div class="">
-                            <p>Monday - Thursday: 8am - 7pm</p>
-                            <p>Fridays: 8am - 6pm</p>
+                            <p>We value your time—our support team aims to reply promptly, </p>
+                             <p>within 24 hours.</p>
                         </div>
                    </div>
                 </div>
-                <div class="contactsOuter">
-                <div class="openingHr">
-                    <p><b>Live Chat support also available</b></p>
-                    <div class="">
-                        <p>Saturday & Sunday 9am - 5pm</p>
-
-                    </div>
-</div>
-                </div>
-
 
                 <div class="contactsOuter">
                     <div class="contacts">

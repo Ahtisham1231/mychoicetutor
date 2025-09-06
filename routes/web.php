@@ -600,6 +600,10 @@ Route::get('courses', function(){
     return view('front-cms/courses');
 });
 
+Route::get('why-choose-us', function(){
+    return view('front-cms/why_choose_us');
+});
+
 Route::get('aboutus', function(){
     return view('front-cms/aboutus');
 });

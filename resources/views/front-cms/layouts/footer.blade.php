@@ -318,7 +318,7 @@
                   <h5 class="mb-4">Quick Links</h5>
                   <ul>
                       <a href="/aboutus"><li>About us</li></a>
-                      <a href="/aboutus"><li>Who we are</li></a>
+                      <a href="/why-choose-us"><li>Why choose us</li></a>
                       <a href="/findatutor"><li>Find Tutor</li></a>
                       <a href="/subjects"><li>Subjects</li></a>
                       <a href="/contact"><li>Contact Us</li></a>

@@ -166,11 +166,14 @@
                             </span>
                             <span>&#163; {{$tutor->rateperhour}}/h</span>
                         </div>
-                        <a href="tutor-details/{{$tutor->tutor_id}}" style="color: black"><span class="name">
-                                {{$tutor->name}}
-                                <p>{{$tutor->subject}}</p>
-                            </span></a>
-                        <span class="desc-tutor">{{$tutor->headline}}</span>
+                         <a href="tutor-details/{{$tutor->tutor_id}}" style="color: black;line-height: 0px;"> <span class="name">
+                                {{ $tutor->name }}
+                                
+                            </span></a> 
+                            <p style="line-height: 14px;">{{ $tutor->subject }}</p>
+                       <p class="desc-tutor" style="font-weight: 400;line-height: 14px;font-size: 13px;">
+    {{ strlen($tutor->headline) > 100 ? substr($tutor->headline, 0, 100) . '...' : $tutor->headline }}
+</p>
                     </div>
                 </div>
             </a>

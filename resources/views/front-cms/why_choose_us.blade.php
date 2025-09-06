@@ -32,7 +32,7 @@
                 <div class="row ">
                     <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                         <div class="whyChooseUsCol">
-                            <h3>ABOUT US</h3>
+                            <h3>Why choose us?</h3>
                             <p class="charcol">Education is the best investment one can make in their children’s lives.
                                 It’s
                                 crucial to be well-informed before selecting tutors and the type of tutoring they
@@ -95,7 +95,11 @@
                             <div class="p-5">
                                 <h3>Flexible scheduling</h3>
 
-                                <p class="charcol">At MCT, flexibility is at the heart of what we offer. We understand that every educator’s lifestyle is unique, which is why we provide flexible schedules that adapt to your routine — not the other way around. With no employment constraints or time limits, you have the freedom to choose the timings that suit you best and even reschedule classes when your plans change. Whether you're at home or on the go, you can teach from anywhere, without time pressure, and connect with students in your own way and at your own pace.</p>
+                                <p class="charcol">MCT offers the option to book a free trial class before
+                                    committing to a tutor. This allows you to familiarize yourself with the tutor’s
+                                    teaching style. Students typically spend this free trial class planning lessons,
+                                    identifying weak areas to address, and discussing various strategies to improve
+                                    grades in any subject.</p>
 
 
                             </div>
@@ -109,8 +113,9 @@
                             <div class="p-5">
                                 <h3>Engage and Excel with Our Lecture Recordings!</h3>
 
-                                <p class="charcol">At My Choice Tutor, we are committed to making learning more accessible and convenient. To support our students, we offer the feature to record lectures so you can revisit lessons anytime, anywhere. Whether you need to revise a topic, catch up on a missed class, or simply reinforce your understanding, recorded sessions ensure you never miss out on valuable learning.
-                                     This feature empowers students to learn at their own pace and build long-term retention with ease.
+                                <p class="charcol">MCT offers the option to book a free trial class before
+                                    committing to a tutor. This allows you to familiarize yourself with the tutor’s
+                                    teaching style. Students typically spend this free trial class planning lessons,
                                 </p>
 
                             </div>
@@ -126,7 +131,10 @@
                     <div class="p-5">
                         <h3>One-on-one lessons</h3>
 
-                        <p class="charcol">At My Choice Tutor, we believe every learner deserves personal attention. That’s why we offer one-on-one lessons designed to match each student’s unique learning style, pace, and goals. Our tutors focus entirely on you, ensuring that every concept is explained clearly and every session is productive. With personalized guidance, students gain confidence, strengthen their skills, and achieve better results in a supportive and distraction-free environment.</p>
+                        <p class="charcol">MCT offers the option to book a free trial class before committing to a
+                            tutor. This allows you to familiarize yourself with the tutor’s teaching style. Students
+                            typically spend this free trial class planning lessons, identifying weak areas to
+                            address, and discussing various strategies to improve grades in any subject.</p>
 
                     </div>
                     <img src="{{ url('frontendnew/img/One-on-one-lessons.png') }}" width="100%" alt="">

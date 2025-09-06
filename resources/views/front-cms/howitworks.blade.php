@@ -37,11 +37,9 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="how-card how-card2 card1" >
-                        <h2>Find the best tutor</h2>
+                        <h2>Create Your Profile</h2>
                         <div class="cardText" >
-                            <p class="mt-4">MCT offers a selection of in-house trained tutors to elevate your academic
-                                career. Explore tutors’ profiles, filter them based on reviews, video testimonials, and
-                                availability.</p>
+                            <p class="mt-4">Students and tutors sign up, set up their profiles, and add details such as subjects, availability, and learning goals.</p>
                         </div>
 
                     </div>
@@ -53,11 +51,9 @@
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="how-card how-card2 card2 " style=" float: right;">
-                        <h2>Connect with the tutor</h2>
+                        <h2>Find Your Match</h2>
                         <div class="cardText" >
-                            <p class="mt-4">MCT embraces a connection-first strategy, offering students the option to
-                                book a free trial class with tutors. This presents an excellent opportunity for both
-                                students and tutors to familiarise themselves.</p>
+                            <p class="mt-4">Students can search and connect with qualified tutors that fit their needs, while tutors receive requests based on their expertise.</p>
                         </div>
 
 
@@ -72,11 +68,9 @@
 
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="margin-top: 90px;">
                     <div class="how-card how-card2 card3" >
-                        <h2>Access course material</h2>
+                        <h2>Learn & Grow</h2>
                         <div class="cardText">
-                            <p class="mt-4">At MCT, we go beyond the basics. When it comes to your grades and
-                                learning, we take that extra step. Our platform automatically records your sessions,
-                                enabling you to revisit, rethink, and reinforce concepts. </p>
+                            <p class="mt-4">Schedule sessions, attend interactive classes online, and track progress ,making learning flexible, effective, and personalized.</p>
                         </div>
                     </div>
                     <div class="imgNumber3">
