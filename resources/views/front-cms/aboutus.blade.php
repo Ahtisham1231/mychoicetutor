@@ -32,11 +32,8 @@
                 <div class="row ">
                     <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                         <div class="whyChooseUsCol">
-                            <h3>ABOUT US</h3>
-                            <p class="charcol">Education is the best investment one can make in their children’s lives.
-                                It’s
-                                crucial to be well-informed before selecting tutors and the type of tutoring they
-                                receive.
+                            <h3>Why Choose Us?</h3>
+                            <p class="charcol">My Choice Tutor is designed to connect students with qualified and dedicated tutors who can guide them towards academic success. We focus on flexibility, personalized learning, and reliable support, ensuring that every student gets the right tutor to match their learning needs, schedule, and study goals.
                             </p>
 
                         </div>

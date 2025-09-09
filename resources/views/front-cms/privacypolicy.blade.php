@@ -2,116 +2,79 @@
 @section('main-section')
 
 <section class="bannerSec tutBann">
-        <div class="container-fluid">
-            <div class="tutorHeader">
-                <h1 class="mb-3">
-                    Privacy Policy for My Choice Tutor
-                </h1>
-
-                <div class="text-center">
-                    <p class="charcol">Protecting Your Personal Information While You Learn</p>
-
-                </div>
-
+    <div class="container-fluid">
+        <div class="tutorHeader">
+            <h1 class="mb-3">
+                Privacy Policy for My Choice Tutor
+            </h1>
+            <div class="text-center">
+                <p class="charcol">Protecting Your Personal Information While You Learn</p>
             </div>
         </div>
+    </div>
+</section>
 
-    </section>
+<section class="container findtutSec-ex">
 
-    <section class="container findtutSec-ex">
-        <h5 calss="mb-2">1. Introduction</h5>
-        <p class="mb-5">Welcome to My Choice Tutor, an online platform where students can enroll in courses and participate in live classes with select tutors. We value your privacy and are committed to protecting your personal information. This Privacy Policy outlines the types of information we collect, how we use it, and the measures we take to safeguard it.</p>
+    <p class="mb-4">My Choice Tutor (“we,” “our,” or “us”) respects your privacy and is committed to protecting the
+personal information you share with us. This Privacy Policy explains how we collect, use, store, and
+protect your information when you use our services, including when you submit information through
+our Meta lead form ads.</p>
 
-        <h3 calss="mb-2"></h3>
-        <p class="mb-5"></p>
+    <h5 class="mb-2">1. Information We Collect</h5>
+    <p>When you interact with our services, we may collect the following types of personal information:</p>
+    <ul>
+        <li>Name of parent/guardian</li>
+        <li>Contact details (phone number, email address)</li>
+        <li>Child’s grade level and subjects required</li>
+        <li>Preferred schedule and location (if applicable)</li>
+    </ul>
 
-        <h5 calss="mb-2">2. Information We Collect</h5>
-        <p class="mb-5">We collect various types of information to provide and improve our services:</p>
+    <h5 class="mb-2 mt-4">2. How We Use Your Information</h5>
+    <p>We use your information to:</p>
+    <ul>
+        <li>Contact you regarding tutoring inquiries and trial lessons</li>
+        <li>Schedule and manage tutoring sessions</li>
+        <li>Personalize tutoring support for your child</li>
+        <li>Provide customer support and respond to your questions</li>
+        <li>Improve our services and communication</li>
+    </ul>
 
+    <h5 class="mb-2 mt-4">3. Data Sharing and Disclosure</h5>
+    <p>We do not sell or rent your personal information to third parties. Your data may only be shared with:</p>
+    <ul>
+        <li>Assigned tutors for lesson scheduling and preparation</li>
+        <li>Service providers who support our operations (e.g., communication tools)</li>
+        <li>Authorities if required by law</li>
+    </ul>
 
-        <p><b>a. Personal Information:</b></p>
-        <ul>
-            <li>Name</li>
-            <li>Email address</li>
-            <li>Phone number</li>
-            <li>Payment information (e.g., credit card details)</li>
-            <li>Course enrollment details</li>
-        </ul>
+    <h5 class="mb-2 mt-4">4. Data Security</h5>
+    <p>We implement reasonable security measures to protect your personal information against unauthorized access, alteration, or disclosure.</p>
 
-        <p><b>b. Non-Personal Information:</b></p>
-        <ul>
-            <li>Browser type and version</li>
-            <li>IP address</li>
-            <li>Time zone setting</li>
-            <li>Browser plug-in types and versions</li>
-            <li>Operating system and platform</li>
-        </ul>
+    <h5 class="mb-2 mt-4">5. Your Rights</h5>
+    <p>You have the right to:</p>
+    <ul>
+        <li>Request access to the information we hold about you</li>
+        <li>Ask us to correct inaccurate information</li>
+        <li>Request deletion of your personal data</li>
+        <li>Opt-out of further communications at any time</li>
+    </ul>
 
-        <p><b>c. Usage Data:</b></p>
-        <ul>
-            <li>Details of your visits to our website</li>
-            <li>Information about your usage patterns and preferences</li>
-            
-        </ul>
+    <h5 class="mb-2 mt-4">6. Children’s Privacy</h5>
+    <p>We only collect limited information about children (grade level, subjects) as provided by parents/guardians. We do not collect or process children’s personal data directly.</p>
 
-        <h5 calss="mb-2">3. How We Use Your Information</h5>
-        <p class="mb-5">We use the information we collect for the following purposes:</p>
+    <h5 class="mb-2 mt-4">7. Updates to This Policy</h5>
+    <p>We may update this Privacy Policy from time to time. Any changes will be posted with a revised effective date.</p>
 
-        <p><b>a. To Provide and Improve Our Services:</b></p>
-        <ul>
-            <li>Enrolling students in courses</li>
-            <li>Facilitating live classes</li>
-            <li>Processing payments</li>
-            <li>Personalizing your learning experience</li>
-            
-        </ul>
+    <h5 class="mb-2 mt-4">8. Contact Us</h5>
+    <p>If you have any questions or concerns regarding this Privacy Policy, you can contact us at:</p>
+    <ul>
+       <strong>My Choice Tutor</strong>
+        <li>Email: <a href="mailto:mychoicetutor@gmail.com">mychoicetutor@gmail.com</a></li>
+        <li>Phone: +44 07761 975326</li>
+    </ul>
 
-        <p><b>b. To Communicate with You:</b></p>
-
-        <ul>
-            <li>Sending updates about your courses</li>
-            <li>Providing customer support</li>
-            <li>Sending newsletters and promotional materials (with your consent)</li>
-            
-        </ul>
-        <p><b>c. To Enhance Security:</b></p>
-        <ul>
-            <li>Monitoring for fraudulent activity</li>
-            <li>Ensuring the integrity of our platform</li>
-            
-        </ul>
-
-        <h5 calss="mb-2">4. Sharing Your Information</h5>
-        <p calss="mb-5">We do not sell, trade, or otherwise transfer your personal information to outside parties except as described in this Privacy Policy. We may share your information with:</p>
-        <p><b>a. Service Providers:</b></p>
-        <ul>
-            <li>Third-party vendors who assist in providing our services (e.g., payment processors, email service providers)</li>
-        </ul>
-
-        
-        <p><b>b. Legal Compliance:</b></p>
-        <ul>
-            <li>When required by law or to protect our rights</li>
-        </ul>
-
-        <p><b>c. Business Transfers:</b></p>
-        <ul>
-            <li>In the event of a merger, acquisition, or sale of all or a portion of our assets</li>
-        </ul>
-
-        <h5 calss="mb-2">5. Data Security</h5>
-        <p class="mb-5"></p>
-
-        <h5 calss="mb-2"></h5>
-        <p class="mb-5">We implement a variety of security measures to maintain the safety of your personal information. However, no method of transmission over the internet or electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your personal information, we cannot guarantee its absolute security.</p>
-
-        <h5 calss="mb-2">6. Your Rights</h5>
-        <p class="mb-5">You have the right to access, correct, or delete your personal information. You can also object to the processing of your data or request data portability. To exercise these rights, please contact us at <a href="mailto:info@mychoicetutor.com">info@mychoicetutor.com</a></p>
-
-        <h5 calss="mb-2">&. Changes to This Privacy Policy</h5>
-        <p class="mb-5">We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on our website. You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
-
-        <br><br>
-    </section>
+    <br><br>
+</section>
 
 @endsection

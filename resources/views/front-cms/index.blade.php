@@ -1,6 +1,92 @@
 @extends('front-cms.layouts.main')
 @section('main-section')
 <!-- END header -->
+ <style>
+ .subject-list {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 15px;                 /* smaller gap by default */
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+    overflow-x: auto;          /* scroll on small screens */
+    scrollbar-width: thin;
+}
+
+.subject-list::-webkit-scrollbar {
+    height: 6px;               /* slim scrollbar */
+}
+.subject-list::-webkit-scrollbar-thumb {
+    background: #ccc; 
+    border-radius: 3px;
+}
+.subject-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.subject-list li {
+    flex: 0 0 auto;
+    text-align: center;
+}
+.subject-btn {
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.subject-btn:focus,
+.subject-btn:active {
+    outline: none;
+    box-shadow: none;
+}
+
+.subject-btn img {
+    max-width: 50px;
+    margin-bottom: 6px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.subject-btn span {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Hover effect for desktop */
+.subject-btn:hover span {
+    color: #7b3fe4; /* purple accent */
+}
+.subject-btn:hover img {
+    transform: scale(1.1);
+}
+.subSec ul li {
+    margin: 0px;
+}
+@media (min-width: 1200px) {
+    .subject-list {
+        justify-content: center; /* center in container */
+        overflow-x: visible;     /* disable scroll */
+        gap: 0;                  /* remove extra gap */
+    }
+
+    .subject-list li {
+        margin: 0 8px;           /* small margin instead */
+    }
+}
+@media (min-width: 1200px) {
+    .containerSubject {
+        max-width: 1290px;
+    }
+}
+
+
+ </style>
 <section class="bannerSec">
     <div class="container-fluid">
         <div class="bannerImg ">
@@ -150,16 +236,16 @@
 
 
                 </div>
-                <div class="container subjContainer">
+                <div class="container subjContainer containerSubject">
                 <div class="subSec">
-                    <ul>
+                    <ul class="subject-list">
                         <li>
                             <form action="{{ url('toptutorsearch') }}" method="POST">
                                 @csrf
-                                <input type="hidden" id="subject" name="subject" value="1">
-                                <button type="submit" style="background:none;border:none;padding:0;">
-                                    <img src="{{ url('frontendnew/img/icons/board-math.png') }}" alt="">
-                                    <p>Maths</p>
+                                <input type="hidden" name="subject" value="1">
+                                <button type="submit" class="subject-btn">
+                                    <img src="{{ url('frontendnew/img/icons/board-math.png') }}" alt="Maths">
+                                    <span>Maths</span>
                                 </button>
                             </form>
                         </li>
@@ -167,124 +253,136 @@
                         <li>
                             <form action="{{ url('toptutorsearch') }}" method="POST">
                                 @csrf
-                                <input type="hidden" id="subject" name="subject" value="2">
-                                <button type="submit" style="background:none;border:none;padding:0;">
-                                <img src="{{ url('frontendnew/img/icons/book-03.png') }}" alt="">
-                                <p>English</p>
-                             </button>
+                                <input type="hidden" name="subject" value="2">
+                                <button type="submit" class="subject-btn">
+                                    <img src="{{ url('frontendnew/img/icons/book-03.png') }}" alt="English">
+                                    <span>English</span>
+                                </button>
                             </form>
                         </li>
+
                         <li>
                             <form action="{{ url('toptutorsearch') }}" method="POST">
                                 @csrf
-                                <input type="hidden" id="subject" name="subject" value="3">
-                                <button type="submit" style="background:none;border:none;padding:0;">
-                                <img src="{{ url('frontendnew/img/icons/chemistry-03.png') }}" alt="">
-                                <p>Chemistry</p>
-                             </button>
+                                <input type="hidden" name="subject" value="3">
+                                <button type="submit" class="subject-btn">
+                                    <img src="{{ url('frontendnew/img/icons/chemistry-03.png') }}" alt="Chemistry">
+                                    <span>Chemistry</span>
+                                </button>
                             </form>
                         </li>
+
                         <li>
                             <form action="{{ url('toptutorsearch') }}" method="POST">
                                 @csrf
-                                <input type="hidden" id="subject" name="subject" value="4">
-                                <button type="submit" style="background:none;border:none;padding:0;">
-                                <img src="{{ url('frontendnew/img/icons/physics.png') }}" alt="">
-                                <p>Physics</p>
-                             </button>
+                                <input type="hidden" name="subject" value="4">
+                                <button type="submit" class="subject-btn">
+                                    <img src="{{ url('frontendnew/img/icons/physics.png') }}" alt="Physics">
+                                    <span>Physics</span>
+                                </button>
                             </form>
                         </li>
+
                         <li>
                             <form action="{{ url('toptutorsearch') }}" method="POST">
                                 @csrf
-                                <input type="hidden" id="subject" name="subject" value="5">
-                                <button type="submit" style="background:none;border:none;padding:0;">
-                                <img src="{{ url('frontendnew/img/icons/geology-crust.png') }}" alt="">
-                                <p>Biology</p>
-                             </button>
+                                <input type="hidden" name="subject" value="5">
+                                <button type="submit" class="subject-btn">
+                                    <img src="{{ url('frontendnew/img/icons/geology-crust.png') }}" alt="Biology">
+                                    <span>Biology</span>
+                                </button>
                             </form>
                         </li>
+
                         <li>
                             <form action="{{ url('toptutorsearch') }}" method="POST">
                                 @csrf
-                                <input type="hidden" id="subject" name="subject" value="6">
-                                <button type="submit" style="background:none;border:none;padding:0;">
-                                <img src="{{ url('frontendnew/img/icons/submerge.png') }}" alt="">
-                                <p>Science</p>
-                             </button>
+                                <input type="hidden" name="subject" value="6">
+                                <button type="submit" class="subject-btn">
+                                    <img src="{{ url('frontendnew/img/icons/submerge.png') }}" alt="Science">
+                                    <span>Science</span>
+                                </button>
                             </form>
                         </li>
+
                         <li>
                             <form action="{{ url('toptutorsearch') }}" method="POST">
                                 @csrf
-                                <input type="hidden" id="subject" name="subject" value="8">
-                                <button type="submit" style="background:none;border:none;padding:0;">
-                                <img src="{{ url('frontendnew/img/icons/translation.png') }}" alt="">
-                                <p>Spanish</p>
-                             </button>
+                                <input type="hidden" name="subject" value="8">
+                                <button type="submit" class="subject-btn">
+                                    <img src="{{ url('frontendnew/img/icons/translation.png') }}" alt="Spanish">
+                                    <span>Spanish</span>
+                                </button>
                             </form>
                         </li>
+
                         <li>
                             <form action="{{ url('toptutorsearch') }}" method="POST">
                                 @csrf
-                                <input type="hidden" id="subject" name="subject" value="9">
-                                <button type="submit" style="background:none;border:none;padding:0;">
-                                <img src="{{ url('frontendnew/img/icons/translation.png') }}" alt="">
-                                <p>French</p>
-                             </button>
+                                <input type="hidden" name="subject" value="9">
+                                <button type="submit" class="subject-btn">
+                                    <img src="{{ url('frontendnew/img/icons/translation.png') }}" alt="French">
+                                    <span>French</span>
+                                </button>
                             </form>
                         </li>
+
                         <li>
                             <form action="{{ url('toptutorsearch') }}" method="POST">
                                 @csrf
-                                <input type="hidden" id="subject" name="subject" value="10">
-                                <button type="submit" style="background:none;border:none;padding:0;">
-                                <img src="{{ url('frontendnew/img/icons/translation.png') }}" alt="">
-                                <p>German</p>
-                             </button>
+                                <input type="hidden" name="subject" value="10">
+                                <button type="submit" class="subject-btn">
+                                    <img src="{{ url('frontendnew/img/icons/translation.png') }}" alt="German">
+                                    <span>German</span>
+                                </button>
                             </form>
                         </li>
+
                         <li>
                             <form action="{{ url('toptutorsearch') }}" method="POST">
                                 @csrf
-                                <input type="hidden" id="subject" name="subject" value="11">
-                                <button type="submit" style="background:none;border:none;padding:0;">
-                                <img src="{{ url('frontendnew/img/icons/text-creation.png') }}" alt="">
-                                <p>History</p>
-                             </button>
+                                <input type="hidden" name="subject" value="11">
+                                <button type="submit" class="subject-btn">
+                                    <img src="{{ url('frontendnew/img/icons/text-creation.png') }}" alt="History">
+                                    <span>History</span>
+                                </button>
                             </form>
                         </li>
+
                         <li>
                             <form action="{{ url('toptutorsearch') }}" method="POST">
                                 @csrf
-                                <input type="hidden" id="subject" name="subject" value="12">
-                                <button type="submit" style="background:none;border:none;padding:0;">
-                                <img src="{{ url('frontendnew/img/icons/music-note-03.png') }}" alt="">
-                                <p>Music</p>
-                             </button>
+                                <input type="hidden" name="subject" value="12">
+                                <button type="submit" class="subject-btn">
+                                    <img src="{{ url('frontendnew/img/icons/music-note-03.png') }}" alt="Music">
+                                    <span>Music</span>
+                                </button>
                             </form>
                         </li>
+
                         <li>
                             <form action="{{ url('toptutorsearch') }}" method="POST">
                                 @csrf
-                                <input type="hidden" id="subject" name="subject" value="13">
-                                <button type="submit" style="background:none;border:none;padding:0;">
-                                <img src="{{ url('frontendnew/img/icons/global-education.png') }}" alt="">
-                                <p>Psychology</p>
-                             </button>
+                                <input type="hidden" name="subject" value="13">
+                                <button type="submit" class="subject-btn">
+                                    <img src="{{ url('frontendnew/img/icons/global-education.png') }}" alt="Psychology">
+                                    <span>Psychology</span>
+                                </button>
                             </form>
                         </li>
+
                         <li>
                             <form action="{{ url('toptutorsearch') }}" method="POST">
                                 @csrf
-                                <input type="hidden" id="subject" name="subject" value="14">
-                                <button type="submit" style="background:none;border:none;padding:0;">
-                                <img src="{{ url('frontendnew/img/icons/school-tie.png') }}" alt="">
-                                <p>Politics</p>
-                             </button>
+                                <input type="hidden" name="subject" value="14">
+                                <button type="submit" class="subject-btn">
+                                    <img src="{{ url('frontendnew/img/icons/school-tie.png') }}" alt="Politics">
+                                    <span>Politics</span>
+                                </button>
                             </form>
                         </li>
                     </ul>
+
                 </div>
                 </div>
             </div>

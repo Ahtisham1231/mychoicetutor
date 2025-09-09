@@ -454,7 +454,7 @@
                   </ul>
   
                   <div class="social">
-                    <a href="https://www.facebook.com/share/1JnqJrEtVx/" target="_blank">
+                    <a href="https://www.facebook.com/share/1BtDAN2Fmy/" target="_blank">
                         <img src="{{ url('frontendnew/img/icons/facebook.png') }}" alt="Facebook">
                     </a>
                     <a href="https://youtube.com/@choicetutoracademy?si=s1Vn-NvQmCGENz4-" target="_blank">

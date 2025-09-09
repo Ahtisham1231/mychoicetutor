@@ -601,11 +601,15 @@ Route::get('courses', function(){
 });
 
 Route::get('why-choose-us', function(){
-    return view('front-cms/why_choose_us');
+    return view('front-cms/aboutus');
 });
 
+// Route::get('why-choose-us', function(){
+//     return view('front-cms/why_choose_us');
+// });
+
 Route::get('aboutus', function(){
-    return view('front-cms/aboutus');
+    return view('front-cms/why_choose_us');
 });
 
 // Route::get('blogdetails', function(){
