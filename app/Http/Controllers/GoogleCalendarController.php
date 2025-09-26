@@ -23,6 +23,8 @@ use Google_Service_Calendar_Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
+use App\Services\TwilioWhatsAppService;
+use Illuminate\Support\Facades\Log;
 
 class GoogleCalendarController extends Controller
 {
@@ -292,7 +294,7 @@ class GoogleCalendarController extends Controller
 
         return redirect()->route('error')->with('message', 'Authentication failed.');
     }
-    public function democonfirm(Request $request)
+    public function democonfirm(Request $request, TwilioWhatsAppService $whatsApp)
     {
         $request->validate([
             'slot' => 'required',
@@ -300,7 +302,6 @@ class GoogleCalendarController extends Controller
 
         $demodata = democlasses::select('*')->where('id', $request->confirmid)->first();
         $demostudent = studentprofile::select('*')->where('student_id', $demodata->student_id)->first();
-
         $client = new Google_Client();
         $client->setClientId('676549087074-1ueuq9ch025rdru9tu8043qfg8o54cso.apps.googleusercontent.com');
         $client->setClientSecret('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');
@@ -357,6 +358,7 @@ class GoogleCalendarController extends Controller
             $dcnf->status = 3;
             $res = $dcnf->save();
 
+            try {
             $details = [
                 'name' => $demostudent->name,
                 'confirmed_slot' => $request->slot,
@@ -364,6 +366,9 @@ class GoogleCalendarController extends Controller
                 'mailtype' => 3,
             ];
             Mail::to($demostudent->email)->send(new SendMail($details));
+        } catch (\Throwable $e) {
+            Log::error('Mail failed: ' . $e->getMessage());
+        }
 
             if ($res) {
                 $notificationdata = new Notification();
@@ -380,6 +385,28 @@ class GoogleCalendarController extends Controller
                 $notified = $notificationdata->save();
 
                 broadcast(new RealTimeMessage('$notification'));
+                if (!empty($demostudent->mobile)) {
+                    // If meeting link is available, use it; otherwise fallback
+                    $meetingLink = $response->hangoutLink ?? null;
+
+                    $message = "👋 Hello {$demostudent->name},\n\n".
+                            "Your trial/demo class has been confirmed ✅\n".
+                            "Subject: {$subjectdata->name}\n".
+                            "Date/Time: " . date('d M Y h:i A', strtotime($classstarttime)) . "\n".
+                            "Tutor: " . session('userid')->name . "\n";
+
+                    if ($meetingLink) {
+                        $message .= "Meeting Link: {$meetingLink}\n\n";
+                    } else {
+                        $message .= "Meeting link will be shared shortly. 📩\n\n";
+                    }
+
+                    $message .= "Please be on time.";
+
+                    $to = "+92" . ltrim($demostudent->mobile, "0"); // format to E.164
+                    $whatsApp->sendMessage($to, $message);
+                }
+
 
                 return redirect()->to('/tutor/demolist')->with('success', 'Trial confirmed successfully');
             } else {
