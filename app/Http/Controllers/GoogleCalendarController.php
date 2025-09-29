@@ -365,7 +365,13 @@ class GoogleCalendarController extends Controller
                 'tutor_name' => session('userid')->name,
                 'mailtype' => 3,
             ];
-            Mail::to($demostudent->email)->send(new SendMail($details));
+            
+try {
+     Mail::to($demostudent->email)->send(new SendMail($details));
+} catch (\Exception $e) {
+    
+}
+          
         } catch (\Throwable $e) {
             Log::error('Mail failed: ' . $e->getMessage());
         }

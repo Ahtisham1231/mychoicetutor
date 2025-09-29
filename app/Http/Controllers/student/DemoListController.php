@@ -14,6 +14,7 @@ use App\Models\tutorregistration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use App\Services\TwilioWhatsAppService;
 
 class DemoListController extends Controller
 {
@@ -136,13 +137,13 @@ class DemoListController extends Controller
         }
     }
 
-    public function bookdemo(Request $request)
+    public function bookdemo(Request $request, TwilioWhatsAppService $whatsApp)
     {
 
         // $studentprofile = studentprofile::select('*')->where('student_id',session('userid')->id)->first();
         $profchk = studentprofile::select('email')->where('student_id', session('userid')->id)->first();
         $tutorname = tutorregistration::select('*')->where('id', $request->demotutorid)->first();
-
+  
         if (!$profchk || $profchk->email === null) {
             return back()->with('fail', 'Please update your profile first. Visit your profile section to update');
         }
@@ -183,7 +184,13 @@ class DemoListController extends Controller
             'mailtype' => 2,
         ];
 
-        Mail::to(session('userid')->email)->send(new SendMail($details));
+       
+try {
+    Mail::to(session('userid')->email)->send(new SendMail($details));
+    // success response if needed
+} catch (\Exception $e) {
+    // log error for debugging
+}
         // Send welcome mail ends here ..
 
         if ($res) {
@@ -221,7 +228,29 @@ class DemoListController extends Controller
             $notificationdata->read_status = 0;
 
             $notified = $notificationdata->save();
+            
+             if (!empty($tutorname->mobile)) {
+    try {
+        $studentName = session('userid')->name;
+
+        $message = "👋 Hello {$tutorname->name},\n\n" .
+                   "A student **{$studentName}** has booked a trial class with you. 🎓\n\n" .
+                   "👉 Please confirm the class at your earliest convenience.";
+
+        // Format number in E.164 (WhatsApp requirement)
+        $to = "+92" . ltrim($tutorname->mobile, "0");
+
+        // Send via your TwilioWhatsAppService
+        $whatsApp->sendMessage($to, $message);
+
+    } catch (\Exception $e) {
+        \Log::error('WhatsApp message sending failed: ' . $e->getMessage());
+    }
+}
+
+
             broadcast(new RealTimeMessage('$notification'));
+
 
             return redirect()->to('student/trialsuccess')->with('success', 'Trial Scheduled Successfully. Please login to class using your registered Email Id.');
         } else {
