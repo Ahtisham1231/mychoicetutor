@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Services;
 
 use Twilio\Rest\Client;
@@ -7,10 +6,19 @@ use Twilio\Rest\Client;
 class TwilioWhatsAppService
 {
     protected $twilio;
+    protected $from;
 
     public function __construct()
     {
-        $this->twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
+        $sid   = config('services.twilio.sid');
+        $token = config('services.twilio.token');
+        $this->from = config('services.twilio.from');
+
+        if (!$sid || !$token) {
+            throw new \Exception("Twilio SID or Auth Token is missing from config.");
+        }
+
+        $this->twilio = new Client($sid, $token);
     }
 
     public function sendMessage(string $to, string $message)
@@ -18,17 +26,18 @@ class TwilioWhatsAppService
         return $this->twilio->messages->create(
             "whatsapp:$to",
             [
-                "from" => env('TWILIO_WHATSAPP_FROM'),
+                "from" => $this->from,
                 "body" => $message
             ]
         );
     }
-   public function sendMessageButton(string $to, string $templateSid, array $variables)
+
+    public function sendMessageButton(string $to, string $templateSid, array $variables)
     {
         return $this->twilio->messages->create(
             "whatsapp:$to",
             [
-                "from" => env('TWILIO_WHATSAPP_FROM'),
+                "from" => $this->from,
                 "contentSid" => $templateSid,
                 "contentVariables" => json_encode($variables),
             ]
