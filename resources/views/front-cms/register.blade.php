@@ -53,9 +53,11 @@
 
                             <div class="form-group">
                                 <label for="number">Mobile:<span class="reqrd">*</span></label>
-                                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Your mobile number"
-                                       value="{{ old('mobile') }}" maxlength="11"
-                                       oninput="validateMobile(this)">
+                               <input type="text" class="form-control" id="mobile" name="mobile"
+       placeholder="Your mobile number"
+       value="{{ old('mobile') }}" maxlength="11"
+       oninput="formatMobile(this)">
+
                                 <span class="text-danger error-message" id="mobile-error">
                                     @error('mobile')
                                         {{ $message }}
@@ -91,7 +93,7 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="radioLogin student active-btn">
-                                            <input type="radio" class="" value="student" name="registerAs"
+                                            <input type="radio" class=""    value="student" name="registerAs"
                                                 id="student" checked> <span>Student</span>
                                         </div>
                                     </div>
@@ -182,20 +184,22 @@
             tutorRadio.addEventListener('change', switchActiveClass);
         });
     </script>
-    <script>
-        function validateMobile(input) {
-            const mobile = input.value;
+  <script>
+function formatMobile(input) {
+    let number = input.value.replace(/\D/g, ''); // remove all non-digits
 
-            // Remove any non-numeric characters
-            input.value = mobile.replace(/[^0-9]/g, '');
+    // Replace 92 only if it's at the very beginning
+    if (number.startsWith('92')) {
+        number = '0' + number.slice(2);
+    }
 
-            if (mobile.length > 11) {
-                document.getElementById('mobile-error').innerText = "Mobile number must be exactly 11 digits.";
-            } else if (mobile.length < 11) {
-                document.getElementById('mobile-error').innerText = "Mobile number must be exactly 11 digits.";
-            } else {
-                document.getElementById('mobile-error').innerText = ""; // Clear error message if valid
-            }
-        }
-    </script>
+    // Limit to max 11 digits
+    if (number.length > 11) {
+        number = number.slice(0, 11);
+    }
+
+    input.value = number; // update field value
+}
+</script>
+
 @endsection
