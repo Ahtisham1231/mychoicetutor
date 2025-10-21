@@ -198,7 +198,7 @@ class TutorSearchController extends Controller
                 'tutorprofiles.*',
                 'subjects.id as subjectid',
                 'subjects.name as subject',
-                \DB::raw('(tutorprofiles.rateperhour * tutorprofiles.admin_commission / 100) + tutorprofiles.rateperhour as rate'),
+                DB::raw('(tutorprofiles.rateperhour * tutorprofiles.admin_commission / 100) + tutorprofiles.rateperhour as rate'),
                 DB::raw('ROUND(COALESCE(AVG(tutorreviews.ratings), 0), 1) AS avg_rating'), // Average rating rounded to 1 decimal
                 DB::raw('COUNT(tutorreviews.id) AS total_reviews') // Total reviews count
             )
@@ -257,7 +257,7 @@ public function admintutorprofile($id)
             'tutorprofiles.*',
             'subjects.id as subjectid',
             'subjects.name as subject',
-            \DB::raw('(tutorprofiles.rateperhour * tutorprofiles.admin_commission / 100) + tutorprofiles.rateperhour as rate'),
+            DB::raw('(tutorprofiles.rateperhour * tutorprofiles.admin_commission / 100) + tutorprofiles.rateperhour as rate'),
             DB::raw('ROUND(COALESCE(AVG(tutorreviews.ratings), 0), 1) AS avg_rating'), // Average rating rounded to 1 decimal
             DB::raw('COUNT(tutorreviews.id) AS total_reviews') // Total reviews count
         )
@@ -527,7 +527,8 @@ public function admintutorprofile($id)
 
     }
 
-    public function purchaseclass(Request $request)
+    // BACKUP: Original Stripe payment method - renamed for backup
+    public function purchaseclass_backup_stripe(Request $request)
     {
         $request->validate([
             'tutorenrollid' => 'required',
@@ -554,6 +555,93 @@ public function admintutorprofile($id)
         return view('stripe', ['amt' => $request->totalamountenroll,
                               'stripeKey' => $stripekey
     ]);
+    }
+
+    // NEW: Enrollment request method (no payment required)
+    public function purchaseclass(Request $request)
+    {
+        try {
+            $request->validate([
+                'tutorenrollid' => 'required',
+                'subjectenrollid' => 'required',
+                'requiredclassenroll' => 'required',
+                'rateperhourenroll' => 'required',
+                'totalamountenroll' => 'required',
+            ]);
+
+            $order_id = substr(uniqid(date('YmdHis')), 0, 20);
+            $classId = subjects::find($request->subjectenrollid);
+            $tutorname = tutorprofile::where('tutor_id', $request->tutorenrollid)->first();
+
+            // Check if subject and tutor exist
+            if (!$classId) {
+                return redirect()->back()->with('fail', 'Subject not found.');
+            }
+            if (!$tutorname) {
+                return redirect()->back()->with('fail', 'Tutor not found.');
+            }
+
+        // Save enrollment request (pending admin approval)
+        $paymentdetails = new paymentdetails();
+        $paymentdetails->transaction_id = $order_id;
+        $paymentdetails->payment_mode = 'Physical Payment';
+        $paymentdetails->amount = $request->totalamountenroll;
+        $paymentdetails->status = 0; // 0 = pending approval
+        $paymentdetails->save();
+
+        // Save student enrollment request
+        $studentpayment = new paymentstudents();
+        $studentpayment->transaction_id = $order_id;
+        $studentpayment->student_id = session('userid')->id;
+        $studentpayment->class_id = $classId->class_id;
+        $studentpayment->subject_id = $request->subjectenrollid;
+        $studentpayment->tutor_id = $request->tutorenrollid;
+        $studentpayment->classes_purchased = $request->requiredclassenroll;
+        $studentpayment->rate_per_hr = $request->rateperhourenroll;
+        $studentpayment->save();
+
+        // Book slots (temporarily reserved)
+        $slotIds = explode(',', $request->slotids);
+        foreach ($slotIds as $slotId) {
+            $slotbooking = SlotBooking::find($slotId);
+            if ($slotbooking) {
+                $slotbooking->student_id = session('userid')->id;
+                $slotbooking->booked_at = now();
+                $slotbooking->transaction_id = $order_id;
+                $slotbooking->subject_id = $request->subjectenrollid;
+                $slotbooking->status = 2; // 2 = pending approval
+                $slotbooking->contact_admin = $request->contactadmin == 'on' ? 1 : 0;
+                $slotbooking->class_schedule_id = $studentpayment->id;
+                $slotbooking->save();
+            }
+        }
+
+        // Send notification to admin
+        $notificationdata = new Notification();
+        $notificationdata->alert_type = 8; // New alert type for enrollment requests
+        $notificationdata->notification = session('userid')->name . ' has requested enrollment for classes with ' . $tutorname->name;
+        $notificationdata->initiator_id = session('userid')->id;
+        $notificationdata->initiator_role = session('userid')->role_id;
+        $notificationdata->event_id = $request->tutorenrollid;
+        $notificationdata->show_to_admin = 1;
+        $notificationdata->show_to_all_admin = 1;
+        $notificationdata->read_status = 0;
+        $notificationdata->save();
+        broadcast(new RealTimeMessage('$notification'));
+
+        // Send mail to student
+        $details = [
+            'name' => session('userid')->name,
+            'total_classes' => $request->requiredclassenroll,
+            'tutor_name' => $tutorname->name,
+            'mailtype' => 5, // New mail type for enrollment request
+        ];
+        Mail::to(session('userid')->email)->send(new SendMail($details));
+
+            return redirect()->route('student.enrollsuccess')->with('success', 'Enrollment request submitted successfully. Admin will review and approve your request.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('fail', 'Something went wrong. Please try again. Error: ' . $e->getMessage());
+        }
     }
     // public function purchaseclass(Request $request)
     // {
@@ -720,7 +808,8 @@ public function admintutorprofile($id)
     //     }
     // }
 
-    public function stripePaymentSuccess(Request $request)
+    // BACKUP: Original Stripe payment success method - renamed for backup
+    public function stripePaymentSuccess_backup(Request $request)
     {
         
         $data = session('stripe_payload');
@@ -777,71 +866,29 @@ public function admintutorprofile($id)
             }
         }
 
-            // if ($contactadmin == 'on') {
+        $notificationdata = new Notification();
+        $notificationdata->alert_type = 7;
+        $notificationdata->notification = session('userid')->name . ' Enrolled for classes';
+        $notificationdata->initiator_id = session('userid')->id;
+        $notificationdata->initiator_role = session('userid')->role_id;
+        $notificationdata->event_id = $data['tutorenrollid'];;
+        $notificationdata->show_to_tutor = 1;
+        $notificationdata->show_to_tutor_id = $data['tutorenrollid'];;
+        $notificationdata->read_status = 0;
 
-            //     // Here I need to pass notification into db
-            //     $notificationdata = new Notification();
-            //     $notificationdata->alert_type = 6;
-            //     $notificationdata->notification = session('userid')->name . ' Need your help in slot booking';
-            //     $notificationdata->initiator_id = session('userid')->id;
-            //     $notificationdata->initiator_role = session('userid')->role_id;
-            //     $notificationdata->event_id = $request->tutorenrollid;
-            //     // Sending to admin
-            //     if($request->receiver_role_id == 1){
-            //         $notificationdata->show_to_admin = 1;
-            //         $notificationdata->show_to_admin_id = $request->receiver_id;
-            //     $notificationdata->show_to_all_admin = 1;
-            //     }
-            //     // Sending to tutor
-            //     if($request->receiver_role_id == 2){
-            //     $notificationdata->show_to_tutor = 1;
-            //     $notificationdata->show_to_tutor_id = $tutor_id->tutor_id;
-            //     $notificationdata->show_to_all_tutor = 0;
-            //     }
-            //     // Sending to student
-            //     if($request->receiver_role_id == 3){
-            //         $notificationdata->show_to_student = 1;
-            //         $notificationdata->show_to_student_id = $request->receiver_id;
-            //         // $notificationdata->show_to_all_student = 0;
-            //     }
-            //     // // Sending to parent
-            //     if($request->receiver_role_id == 3){
-            //         $notificationdata->show_to_parent = 1;
-            //         $notificationdata->show_to_parent_id = $request->receiver_id;
-            //         // $notificationdata->show_to_all_parent = 0;
-            //     }
-            //     $notificationdata->read_status = 0;
-
-            //     $notified = $notificationdata->save();
-            //     broadcast(new RealTimeMessage('$notification'));
-
-            //     $msg = 'Enrollment completed. Please have patience, admin you contact you soon.';
-            // } else {
-            //     $msg = 'Enrollment Completed & Slots confirmed. Kindly use your registered Email Id to join class.';
-            // }
-
-            // if ($spdres) {
-
-                $notificationdata = new Notification();
-                $notificationdata->alert_type = 7;
-                $notificationdata->notification = session('userid')->name . ' Enrolled for classes';
-                $notificationdata->initiator_id = session('userid')->id;
-                $notificationdata->initiator_role = session('userid')->role_id;
-                $notificationdata->event_id = $data['tutorenrollid'];;
-                $notificationdata->show_to_tutor = 1;
-                $notificationdata->show_to_tutor_id = $data['tutorenrollid'];;
-                $notificationdata->read_status = 0;
-
-                $notified = $notificationdata->save();
-                broadcast(new RealTimeMessage('$notification'));
-                return redirect()->to('student/enrollsuccess');
-            // } else {
-            //     return back()->with('fail', 'Something Went Wrong. Try Again Later');
-            // }
-        // Create notifications
-        // (You can copy notification logic here as in your original code)
+        $notified = $notificationdata->save();
+        broadcast(new RealTimeMessage('$notification'));
+        return redirect()->to('student/enrollsuccess');
 
         return redirect()->to('student/enrollsuccess')->with('success', 'Payment and booking successful.');
+    }
+
+    // NEW: Admin approval method for enrollment requests
+    public function stripePaymentSuccess(Request $request)
+    {
+        // This method is now used for admin approval of enrollment requests
+        // The actual implementation will be in the admin controller
+        return redirect()->back()->with('info', 'This method is now handled by admin approval system.');
     }
 
 
@@ -1152,7 +1199,7 @@ public function admintutorprofile($id)
 
 
         $currentDate = Carbon::now()->toDateString();
-        $enrollment = TutorSubjectMapping::select('tutorsubjectmappings.*', 'subjects.name as subject_name', 'tutorprofiles.name as tutor_name', \DB::raw('(tutorprofiles.rateperhour * tutorprofiles.admin_commission / 100) + tutorprofiles.rateperhour as rate'))
+        $enrollment = TutorSubjectMapping::select('tutorsubjectmappings.*', 'subjects.name as subject_name', 'tutorprofiles.name as tutor_name', DB::raw('(tutorprofiles.rateperhour * tutorprofiles.admin_commission / 100) + tutorprofiles.rateperhour as rate'))
             ->join('tutorprofiles', 'tutorprofiles.tutor_id', '=', 'tutorsubjectmappings.tutor_id')
             ->join('subjects', 'subjects.id', '=', 'tutorsubjectmappings.subject_id')
             ->where('tutorprofiles.tutor_id', $id)

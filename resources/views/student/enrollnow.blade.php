@@ -56,9 +56,10 @@
                 @endif
 
                 <div id="" class="mb-3 listHeader page-title-box">
-                    <h3>Enroll Now</h3>
-                    {{-- <a href="completed-classes"> <button class="btn btn-primary">Completed Classes</button></a> --}}
-
+                    <h3>Request Enrollment</h3>
+                    <div class="alert alert-info">
+                        <strong>Note:</strong> You are requesting enrollment for classes. Admin will review your request and approve it after payment verification. You will be notified once approved.
+                    </div>
                 </div>
                 <div class="avalability">
                     <i class="fa fa-square red" aria-hidden="true"></i><span>&nbsp;Not Available</span>
@@ -176,13 +177,16 @@
                     </table>
                      </div>
                     <div style="display: flex; justify-content:space-between" class="my-3">
-                    <div>
+                    <div class="contact-admin-section">
                         <input type="hidden" id="slotids" name="slotids">
-                        <input type="checkbox" id="contactadmin" name="contactadmin">
-                        <span>
-                        <label for="contactadmin"> Please select to contact Admin, if you are not able to select slots.</label></span>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="contactadmin" name="contactadmin">
+                            <label class="form-check-label" for="contactadmin">
+                                <strong>Contact Admin</strong> - Please select this option if you are not able to select slots and need admin assistance.
+                            </label>
+                        </div>
                     </div>
-                    <button id="payNowBtn" class="btn btn-sm btn-primary" disabled>Pay Now</button>
+                    <button id="requestEnrollmentBtn" class="btn btn-sm btn-success" disabled>Request Enrollment</button>
 
                 </form>
             </div>
@@ -200,56 +204,47 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const slotButtons = document.querySelectorAll('.slot-btn');
-        const payNowButton = document.getElementById('payNowBtn');
-        const selectedSlotInput = document.getElementById('selectedSlotId');
-
-        let selectedSlotId = null;
-
-        slotButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const currentSlotId = this.getAttribute('data-slot-id');
-
-                // If clicking the same selected slot again (toggle off)
-                if (selectedSlotId === currentSlotId) {
-                    this.classList.remove('active-slot');
-                    selectedSlotId = null;
-                    selectedSlotInput.value = '';
-                    payNowButton.disabled = true;
-                } else {
-                    // Unselect all others
-                    slotButtons.forEach(btn => btn.classList.remove('active-slot'));
-
-                    // Select current
-                    this.classList.add('active-slot');
-                    selectedSlotId = currentSlotId;
-                    selectedSlotInput.value = currentSlotId;
-                    payNowButton.disabled = false;
-                }
-            });
-        });
-    });
-</script>
 
 <style>
     .active-slot {
         outline: 2px solid #000;
         box-shadow: 0 0 5px #000;
     }
-</style>
-
-<style>
-    .active-slot {
-        outline: 2px solid #000;
-        box-shadow: 0 0 5px #000;
+    
+    #requestEnrollmentBtn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+    
+    #requestEnrollmentBtn:not(:disabled) {
+        opacity: 1;
+        cursor: pointer;
+    }
+    
+    .contact-admin-section {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        border: 1px solid #dee2e6;
+        margin-top: 10px;
     }
 </style>
     <script>
         $(document).ready(function() {
             // Initialize an array to store selected slots
             var selectedSlots = [];
+            
+            // Function to check if button should be enabled
+            function checkButtonState() {
+                const hasSelectedSlots = selectedSlots.length > 0;
+                const isContactAdminChecked = $('#contactadmin').is(':checked');
+                
+                // Enable button if either slots are selected OR contact admin is checked
+                $('#requestEnrollmentBtn').prop('disabled', !(hasSelectedSlots || isContactAdminChecked));
+            }
+            
+            // Add event listener to checkbox
+            $('#contactadmin').on('change', checkButtonState);
 
             // Event listener for the "requiredclasses" input field change
             $('#requiredclassenroll').on('keyup', function() {
@@ -258,6 +253,8 @@
                 $('.slot-btn').removeClass('selected').removeClass('btn-primary').addClass('btn-success');
                 // Update the slotids input field
                 updateSlotIdsInput();
+                // Check button state after clearing slots
+                checkButtonState();
                 // Log the cleared selected slots (you can customize this part based on your requirements)
                 console.log('Selected Slots Cleared:', selectedSlots);
             });
@@ -321,6 +318,9 @@
 
                 // Update the slotids input field
                 updateSlotIdsInput();
+                
+                // Check button state after slot selection
+                checkButtonState();
 
                 // Log the selected slots (you can customize this part based on your requirements)
                 console.log('Selected Slots:', selectedSlots);
@@ -335,6 +335,9 @@
                 $('#slotids').val(slotIds);
             }
 
+            // Initial check for button state
+            checkButtonState();
+            
             // Additional logic can be added here based on your requirements
         });
     </script>

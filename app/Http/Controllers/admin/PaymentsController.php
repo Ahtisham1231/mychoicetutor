@@ -16,6 +16,11 @@ use App\Models\tutorsubjectmapping;
 use Illuminate\Http\Request;
 use App\Models\payout;
 use Illuminate\Support\Facades\DB;
+use App\Models\SlotBooking;
+use App\Models\Notification;
+use App\Events\RealTimeMessage;
+use App\Mail\SendMail;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentsController extends Controller
 {
@@ -518,5 +523,182 @@ class PaymentsController extends Controller
             'table' => $viewTable,
             'pagination' => $viewPagination
         ]);
+    }
+
+    // NEW: Enrollment Request Management Methods
+    
+    /**
+     * Display pending enrollment requests
+     */
+    public function enrollmentRequests()
+    {
+        try {
+            $enrollmentRequests = paymentdetails::select(
+                'paymentdetails.*',
+                'paymentstudents.*',
+                'studentregistrations.name as student_name',
+                'studentregistrations.email as student_email',
+                'tutorregistrations.name as tutor_name',
+                'subjects.name as subject_name',
+                'classes.name as class_name'
+            )
+            ->join('paymentstudents', 'paymentstudents.transaction_id', 'paymentdetails.transaction_id')
+            ->join('studentregistrations', 'studentregistrations.id', 'paymentstudents.student_id')
+            ->join('tutorregistrations', 'tutorregistrations.id', 'paymentstudents.tutor_id')
+            ->join('subjects', 'subjects.id', 'paymentstudents.subject_id')
+            ->join('classes', 'classes.id', 'paymentstudents.class_id')
+            ->where('paymentdetails.status', 0) // 0 = pending approval
+            ->where('paymentdetails.payment_mode', 'Physical Payment')
+            ->orderBy('paymentdetails.created_at', 'desc')
+            ->paginate(10);
+
+            return view('admin.enrollment-requests', compact('enrollmentRequests'));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.dashboard')->with('fail', 'Error loading enrollment requests: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Approve enrollment request
+     */
+    public function approveEnrollmentRequest(Request $request)
+    {
+        try {
+            $request->validate([
+                'transaction_id' => 'required|string',
+                'payment_verified' => 'required|boolean'
+            ]);
+
+            $transactionId = $request->transaction_id;
+            $paymentVerified = $request->payment_verified;
+
+        // Update payment details
+        $paymentDetails = paymentdetails::where('transaction_id', $transactionId)->first();
+        if ($paymentDetails) {
+            $paymentDetails->status = $paymentVerified ? 1 : 0; // 1 = approved, 0 = pending
+            $paymentDetails->save();
+        }
+
+        // Update slot bookings
+        $slotBookings = SlotBooking::where('transaction_id', $transactionId)->get();
+        foreach ($slotBookings as $slot) {
+            $slot->status = $paymentVerified ? 1 : 0; // 1 = confirmed, 0 = pending
+            $slot->save();
+        }
+
+        if ($paymentVerified) {
+            // Get student and tutor info for notifications
+            $studentPayment = paymentstudents::where('transaction_id', $transactionId)->first();
+            $student = studentregistration::find($studentPayment->student_id);
+            $tutor = tutorregistration::find($studentPayment->tutor_id);
+
+            // Send notification to student
+            $notificationdata = new Notification();
+            $notificationdata->alert_type = 9; // New alert type for enrollment approval
+            $notificationdata->notification = 'Your enrollment request has been approved! Classes are now confirmed.';
+            $notificationdata->initiator_id = session('userid')->id;
+            $notificationdata->initiator_role = session('userid')->role_id;
+            $notificationdata->event_id = $studentPayment->tutor_id;
+            $notificationdata->show_to_student = 1;
+            $notificationdata->show_to_student_id = $studentPayment->student_id;
+            $notificationdata->read_status = 0;
+            $notificationdata->save();
+            broadcast(new RealTimeMessage('$notification'));
+
+            // Send notification to tutor
+            $tutorNotification = new Notification();
+            $tutorNotification->alert_type = 10; // New alert type for tutor notification
+            $tutorNotification->notification = $student->name . ' enrollment has been approved for your classes.';
+            $tutorNotification->initiator_id = session('userid')->id;
+            $tutorNotification->initiator_role = session('userid')->role_id;
+            $tutorNotification->event_id = $studentPayment->student_id;
+            $tutorNotification->show_to_tutor = 1;
+            $tutorNotification->show_to_tutor_id = $studentPayment->tutor_id;
+            $tutorNotification->read_status = 0;
+            $tutorNotification->save();
+            broadcast(new RealTimeMessage('$notification'));
+
+            // Send email to student
+            $details = [
+                'name' => $student->name,
+                'total_classes' => $studentPayment->classes_purchased,
+                'tutor_name' => $tutor->name,
+                'mailtype' => 6, // New mail type for enrollment approval
+            ];
+            Mail::to($student->email)->send(new SendMail($details));
+
+            return redirect()->route('admin.enrollment-requests')->with('success', 'Enrollment request approved successfully!');
+        } else {
+            return redirect()->route('admin.enrollment-requests')->with('info', 'Enrollment request marked as pending payment verification.');
+        }
+        } catch (\Exception $e) {
+            return redirect()->route('admin.enrollment-requests')->with('fail', 'Something went wrong. Please try again. Error: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Reject enrollment request
+     */
+    public function rejectEnrollmentRequest(Request $request)
+    {
+        try {
+            $request->validate([
+                'transaction_id' => 'required|string',
+                'rejection_reason' => 'required|string'
+            ]);
+
+            $transactionId = $request->transaction_id;
+            $rejectionReason = $request->rejection_reason;
+
+        // Update payment details
+        $paymentDetails = paymentdetails::where('transaction_id', $transactionId)->first();
+        if ($paymentDetails) {
+            $paymentDetails->status = -1; // -1 = rejected
+            $paymentDetails->remarks = $rejectionReason;
+            $paymentDetails->save();
+        }
+
+        // Release slot bookings
+        $slotBookings = SlotBooking::where('transaction_id', $transactionId)->get();
+        foreach ($slotBookings as $slot) {
+            $slot->student_id = null;
+            $slot->booked_at = null;
+            $slot->transaction_id = null;
+            $slot->subject_id = null;
+            $slot->status = 0; // 0 = available
+            $slot->contact_admin = 0;
+            $slot->class_schedule_id = null;
+            $slot->save();
+        }
+
+        // Get student info for notification
+        $studentPayment = paymentstudents::where('transaction_id', $transactionId)->first();
+        $student = studentregistration::find($studentPayment->student_id);
+
+        // Send notification to student
+        $notificationdata = new Notification();
+        $notificationdata->alert_type = 11; // New alert type for enrollment rejection
+        $notificationdata->notification = 'Your enrollment request has been rejected. Reason: ' . $rejectionReason;
+        $notificationdata->initiator_id = session('userid')->id;
+        $notificationdata->initiator_role = session('userid')->role_id;
+        $notificationdata->event_id = $studentPayment->tutor_id;
+        $notificationdata->show_to_student = 1;
+        $notificationdata->show_to_student_id = $studentPayment->student_id;
+        $notificationdata->read_status = 0;
+        $notificationdata->save();
+        broadcast(new RealTimeMessage('$notification'));
+
+        // Send email to student
+        $details = [
+            'name' => $student->name,
+            'rejection_reason' => $rejectionReason,
+            'mailtype' => 7, // New mail type for enrollment rejection
+        ];
+        Mail::to($student->email)->send(new SendMail($details));
+
+        return redirect()->route('admin.enrollment-requests')->with('success', 'Enrollment request rejected successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.enrollment-requests')->with('fail', 'Something went wrong. Please try again. Error: ' . $e->getMessage());
+        }
     }
 }

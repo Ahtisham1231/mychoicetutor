@@ -36,7 +36,7 @@ use App\Http\Controllers\tutor\ClassScheduleController;
 use App\Http\Controllers\TutorreviewsController;
 use App\Http\Controllers\ZoomClassesController;
 use App\Http\Controllers\SlotBookingController;
-use App\Http\Controllers\WorldPayController;
+// use App\Http\Controllers\WorldPayController;
 use App\Models\classes;
 use App\Models\SlotBooking;
 use App\Models\tutorreviews;
@@ -307,6 +307,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['AdminAuthenticate']], funct
     Route::get('tutorpayments', [PaymentsController::class, 'tutorpayments'])->name('admin.tutorpayments');
     Route::get('tutorpaymentslist', [PaymentsController::class, 'tutorpaymentslist'])->name('admin.tutorpaymentslist');
     Route::post('payments', [PaymentsController::class, 'update'])->name('admin.payments.update');
+    
+    // NEW: Enrollment Request Management
+    Route::get('enrollment-requests', [PaymentsController::class, 'enrollmentRequests'])->name('admin.enrollment-requests');
+    Route::post('approve-enrollment', [PaymentsController::class, 'approveEnrollmentRequest'])->name('admin.approve-enrollment');
+    Route::post('reject-enrollment', [PaymentsController::class, 'rejectEnrollmentRequest'])->name('admin.reject-enrollment');
+    
     // admin tutor payment
     Route::any('tutor-payment', [PaymentsController::class, 'tutorPaymentAdmin'])->name('admin.tutor-payment');
     Route::post('fetchtutorsAmount', [PaymentsController::class, 'fetchtutorsAmount'])->name('admin.fetch-tutor-amount');
@@ -634,8 +640,8 @@ Route::get('contact', function(){
 });
 
 // WorldPay Payment Gateway
-Route::get('/worldpay/payment/', [WorldPayController::class, 'showPaymentPage'])->name('worldpay.payment.page');
-Route::post('/worldpay/initiate', [WorldPayController::class, 'initiatePayment'])->name('worldpay.payment');
+// Route::get('/worldpay/payment/', [WorldPayController::class, 'showPaymentPage'])->name('worldpay.payment.page');
+// Route::post('/worldpay/initiate', [WorldPayController::class, 'initiatePayment'])->name('worldpay.payment');
 // Route::get('/initiate-payment', [PaymentController::class, 'initiatePayment'])->name('initiate.payment');
 
 // Optional: Success, cancel, and failed routes

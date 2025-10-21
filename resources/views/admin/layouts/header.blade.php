@@ -654,7 +654,7 @@
 
                         <li class="nav-item">
                         @php
-                            $isPayActive = Request::is('admin/tutorpaymentslist') || Request::is('admin/payments')|| Request::is('admin/blogs');
+                            $isPayActive = Request::is('admin/tutorpaymentslist') || Request::is('admin/payments') || Request::is('admin/enrollment-requests') || Request::is('admin/blogs');
                             @endphp
 
                             <a class="nav-link menu-link" href="#sidebarFormsPay" data-bs-toggle="collapse" role="button" aria-expanded="{{ $isPayActive ? 'true' : 'false' }}" aria-controls="sidebarForms">
@@ -670,6 +670,9 @@
                                     </li>
                                     <li class="nav-item">
                                         <a href="{{route('admin.payments')}}" class="nav-link {{ Request::is('admin/payments') ? 'active' : '' }}" data-key="t-checkboxs-radios"> Student Payment </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{route('admin.enrollment-requests')}}" class="nav-link {{ Request::is('admin/enrollment-requests') ? 'active' : '' }}" data-key="t-enrollment-requests"> Enrollment Requests </a>
                                     </li>
                                     {{-- <li class="nav-item">
                                         <a href="#" class="nav-link {{ Request::is('admin/blogs') ? 'active' : '' }}" data-key="t-pickers"> Transactions List </a>
