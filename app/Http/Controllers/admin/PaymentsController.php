@@ -603,7 +603,7 @@ class PaymentsController extends Controller
             $notificationdata->show_to_student_id = $studentPayment->student_id;
             $notificationdata->read_status = 0;
             $notificationdata->save();
-            broadcast(new RealTimeMessage('$notification'));
+            broadcast(new RealTimeMessage($notificationdata));
 
             // Send notification to tutor
             $tutorNotification = new Notification();
@@ -616,7 +616,7 @@ class PaymentsController extends Controller
             $tutorNotification->show_to_tutor_id = $studentPayment->tutor_id;
             $tutorNotification->read_status = 0;
             $tutorNotification->save();
-            broadcast(new RealTimeMessage('$notification'));
+            broadcast(new RealTimeMessage($tutorNotification));
 
             // Send email to student
             $details = [
@@ -625,7 +625,7 @@ class PaymentsController extends Controller
                 'tutor_name' => $tutor->name,
                 'mailtype' => 6, // New mail type for enrollment approval
             ];
-            Mail::to($student->email)->send(new SendMail($details));
+            // Mail::to($student->email)->send(new SendMail($details));
 
             return redirect()->route('admin.enrollment-requests')->with('success', 'Enrollment request approved successfully!');
         } else {

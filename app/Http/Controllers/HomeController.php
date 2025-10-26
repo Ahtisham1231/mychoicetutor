@@ -1767,7 +1767,10 @@ class HomeController extends Controller
     public function checkNotificationDetails($id)
     {
         $notificationData = Notification::find($id);
-        //    dd($notificationData);
+        // Check if notification exists
+        if (!$notificationData) {
+            return redirect()->back()->with('fail', 'Notification not found or invalid.');
+        }
         // Notification Event On Chat
         if ($notificationData->alert_type == 1) {
 
@@ -2054,13 +2057,54 @@ class HomeController extends Controller
             }
 
         }
+        // dd($notificationData->alert_type);
+        if ((int)$notificationData->alert_type === 9) {
+            // dd($notificationData->initiator_role);
+            // Slot Booked By Student
+            if ($notificationData->initiator_role == 1) {
+
+                if (session('userid')->role_id == 1) {
+                    return redirect()->to('admin/payments');
+                }
+                if (session('userid')->role_id == 2) {
+                    return redirect()->to('tutor/tutorslots');
+                }
+                if (session('userid')->role_id == 3) {
+                    // return redirect()->to('student/enrollupdate/' . $notificationData->initiator_id);
+                    return redirect()->to('student/classes');
+                }
+
+            }
+            // Slot Booked By Student
+            if ($notificationData->initiator_role == 2) {
+
+                if (session('userid')->role_id == 1) {
+                    return redirect()->to('admin/payments');
+                }
+                if (session('userid')->role_id == 2) {
+                    return redirect()->to('tutor/tutorslots');
+                }
+                if (session('userid')->role_id == 3) {
+                    // return redirect()->to('student/enrollupdate/' . $notificationData->initiator_id);
+                    return redirect()->to('student/classes');
+                }
+
+            }
+
+        }
         // Notification Event On Tutor Registration
         if ($notificationData->alert_type == 8) {
-
+            // dd($notificationData->initiator_role);
             // Initiated by tutor
             if ($notificationData->initiator_role == 2) {
                 if (session('userid')->role_id == 1) {
                     return redirect()->to('admin/tutors');
+                }
+
+            }
+            if ($notificationData->initiator_role == 3) {
+                if (session('userid')->role_id == 1) {
+                    return redirect()->to('admin/enrollment-requests');
                 }
 
             }

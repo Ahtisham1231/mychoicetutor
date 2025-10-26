@@ -55,10 +55,14 @@
                     <div class="alert alert-danger">{{ Session::get('fail') }}</div>
                 @endif
 
-                <div id="" class="mb-3 listHeader page-title-box">
-                    <h3>Request Enrollment</h3>
-                    <div class="alert alert-info">
-                        <strong>Note:</strong> You are requesting enrollment for classes. Admin will review your request and approve it after payment verification. You will be notified once approved.
+                <div id="" class="mb-3 listHeader page-title-box row">
+                    <div class="col-12 col-md-6">
+                        <h3>Request Enrollment</h3>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> You are requesting enrollment for classes. Admin will review your request and approve it after payment verification. You will be notified once approved.
+                        </div>
                     </div>
                 </div>
                 <div class="avalability">
